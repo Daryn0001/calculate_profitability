@@ -24,6 +24,7 @@ class Mytheme {
     primaryColor: Colors.black,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFF002FFF)),
-    appBarTheme: const AppBarTheme(backgroundColor: Color(0xff3450A1)),//const AppBarTheme(backgroundColor: Color(0xffF4F6FD)),
+    appBarTheme: const AppBarTheme(backgroundColor: Color(0xff3450A1)),
+    //const AppBarTheme(backgroundColor: Color(0xffF4F6FD)),
   );
 }
