@@ -14,7 +14,6 @@ class DrawerWidget extends StatefulWidget {
 
 class _DrawerWidgetState extends State<DrawerWidget>
     with SingleTickerProviderStateMixin {
-  final double runanim = 0.4;
   @override
   Widget build(BuildContext context) {
     var we = MediaQuery.of(context).size.width;
@@ -28,7 +27,7 @@ class _DrawerWidgetState extends State<DrawerWidget>
         SizedBox(
           height: he * 0.02,
         ),
-        _buidText(context),
+        _buildText(context),
         SizedBox(
           height: he * 0.02,
         ),
@@ -90,7 +89,7 @@ class _DrawerWidgetState extends State<DrawerWidget>
     );
   }
 
-  Widget _buidText(context) {
+  Widget _buildText(context) {
     var we = MediaQuery.of(context).size.width;
     var he = MediaQuery.of(context).size.height;
 
@@ -100,16 +99,16 @@ class _DrawerWidgetState extends State<DrawerWidget>
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Joy",
+            "Диплом",
             style: GoogleFonts.lato(
                 fontSize: 40,
                 letterSpacing: 2,
                 color: Colors.white,
                 fontWeight: FontWeight.bold),
           ),
-          Text(
-            "Mitchell",
-            style: GoogleFonts.lato(
+          const Text(
+            "Тақырыбы",
+            style: TextStyle(
                 fontSize: 40,
                 letterSpacing: 2,
                 color: Colors.white,

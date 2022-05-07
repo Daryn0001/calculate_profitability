@@ -14,7 +14,9 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-   var algosCost;
+  double algorithmCreatingCost = 0;
+  double insuranceCost = 0;
+  var algosCost;
    var programCost;
 
   String text = 'Кешенді құруға және өндіруге кеткен шығындар, '

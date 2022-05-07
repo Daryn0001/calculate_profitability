@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
           themeMode: themProvider.themeMode,
           darkTheme: Mytheme.darkthem,
           theme: Mytheme.lightthem,
-          home: const LogIn(),
+          home:  HidenDrawer(),
         );
       });
 }

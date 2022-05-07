@@ -1,32 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class Timecall extends StatelessWidget {
   String text = "";
-  int nowtime = DateTime.now().hour;
 
-  String time_call() {
-    print('nowtime: $nowtime');
-    if (nowtime <= 11) {
-      text = "Good Morning  ☀️";
+  int nowtime = DateTime.now().hour;
+  String timeCall() {
+    print(nowtime);
+    if (nowtime <= 4) {
+      text = "Қайырлы түн  🌙";
     }
-    if (nowtime > 11) {
-      text = "Good Aftternoon  🌞";
-    } if (nowtime >= 16){
-      text = "Good Evening  🌆";
-    } if (nowtime >= 18) {
-      text = "Good Night  🌙";
+    else if (nowtime <= 11) {
+      text = "Қайырлы таң  ☀️";
+    }
+    else if (nowtime > 11 && nowtime < 16) {
+      text = "Қайырлы күн  🌞";
+    } else if (nowtime >= 16 && nowtime < 18){
+      text = "Қайырлы кеш  🌆";
+    }else if (nowtime >= 18) {
+      text = "Қайырлы түн  🌙";
     }
 
     return text;
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Container(
         child: Text(
-      time_call(),
-      style: GoogleFonts.lato(
+      timeCall(),
+      style: TextStyle(
         color: Theme.of(context).primaryColor,
         fontWeight: FontWeight.bold,
         fontSize: 27,

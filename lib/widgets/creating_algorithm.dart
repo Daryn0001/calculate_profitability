@@ -15,6 +15,8 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
   final salaryController = TextEditingController();
   final insuranceController = TextEditingController();
   final timeController = TextEditingController();
+  double algorithmCreatingCost = 0;
+  double insuranceCost = 0;
   String salary = '',
       timeSpend = '',
       spendingOnInsurance = '',
@@ -26,6 +28,14 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
       CostOfCreatingAnAlgorithm.result = result =  d.toString();
     });
   }
+
+  void initValue({double? insurance, double?  sumCost}){
+    setState(() {
+      algorithmCreatingCost = sumCost!;
+      insuranceCost = insurance!;
+    });
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +120,11 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
                   double n1 = double.parse(salaryController.text);
                   double n2 = double.parse(timeController.text);
                   double n3 = double.parse(insuranceController.text);
-                  double d1 = n1 * n2 + ((n1 * n3) / 100);
+                  double d0 = ((n1 * n3) / 100);
+                  double d1  =  n1 * n2 + d0;
+
+                  initValue(insurance: d0, sumCost: d1);
+
 
                   _getAnswer(d1);
                   salaryController.text = '${salaryController.text} тг';

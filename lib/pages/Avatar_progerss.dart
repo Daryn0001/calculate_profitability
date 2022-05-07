@@ -50,7 +50,7 @@ class _Progerss_AvaterState extends State<Progerss_Avater>
           const Center(
               child: CircleAvatar(
                   radius: 45.0,
-                  backgroundImage: AssetImage("assets/Avatar.jpg"))),
+                  backgroundImage: AssetImage("assets/bit2.webp"))),
         ],
       ),
     );
