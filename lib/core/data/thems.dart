@@ -12,7 +12,7 @@ class ThemProvider extends ChangeNotifier {
 
 class Mytheme {
   static final darkthem = ThemeData(
-      scaffoldBackgroundColor: const Color(0xff3450A1),
+      scaffoldBackgroundColor: const Color(0xff7f8cb6),
       appBarTheme: const AppBarTheme(backgroundColor: Color(0xff3450A1)),
       primaryColor: Colors.white,
       cardColor: const Color(0xff0A155A),
@@ -24,7 +24,7 @@ class Mytheme {
     primaryColor: Colors.black,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFF002FFF)),
-    appBarTheme: const AppBarTheme(backgroundColor: Color(0xff3450A1)),
-    //const AppBarTheme(backgroundColor: Color(0xffF4F6FD)),
+    appBarTheme: //const AppBarTheme(backgroundColor: Color(0xff3450A1)),
+    const AppBarTheme(backgroundColor: Color(0xFF7F8CB6)),
   );
 }

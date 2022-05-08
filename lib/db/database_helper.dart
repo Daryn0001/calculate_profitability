@@ -1,7 +1,7 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '../models/note.dart';
+import '../model/note.dart';
 
 class NotesDatabase {
   static final NotesDatabase instance = NotesDatabase._init();
@@ -13,7 +13,7 @@ class NotesDatabase {
   Future<Database> get database async {
     if(_database != null) return _database!;
 
-    _database = await _initDB('notes.db');
+    _database = await _initDB('notes2.db');
     return _database!;
 
   }
@@ -27,8 +27,8 @@ class NotesDatabase {
 
   Future _createDB(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
-    const integerType = 'INTEGER NOT NULL';
-    const doubleType = 'DOUBLE NOT NULL';
+    const integerType = 'INTEGER';
+    const doubleType = 'DOUBLE';
     //const stringType = 'TEXT NOT NULL';
 
     await db.execute('''
@@ -37,7 +37,7 @@ class NotesDatabase {
         ${NoteFields.algorithmCreatingCost} $doubleType,
         ${NoteFields.salary} $integerType,
         ${NoteFields.timeToCreateAlgorithm} $doubleType,
-        ${NoteFields.insuranceInPercents} $integerType,
+        ${NoteFields.insuranceInPercents} $doubleType,
         ${NoteFields.insuranceCost} $doubleType,
         ${NoteFields.programCreatingCost} $doubleType,
         ${NoteFields.costOfMachineTime} $doubleType,
@@ -46,14 +46,14 @@ class NotesDatabase {
         ${NoteFields.costPerHour} $integerType,
         ${NoteFields.costForWritingAndCorrecting} $doubleType,
         ${NoteFields.timeForFix} $doubleType,
-        ${NoteFields.programmerSalary} $integerType,        
+        ${NoteFields.programmerSalary} $integerType        
       )
     ''');
   }
 
   Future<Note> create(Note note) async{
     //FIXME:  final db = instance.database;
-    final db = instance.database as Database;
+    final db = await instance.database;
 
 
     final id = await db.insert(tableNotes, note.toJson());
@@ -83,7 +83,7 @@ class NotesDatabase {
   Future<List<Note>> readAllNotes() async {
     final db = await instance.database;
 
-    final orderBy = '${NoteFields.id} ASC';
+    const orderBy = '${NoteFields.id} ASC';
     // final result =
     //     await db.rawQuery('SELECT * FROM $tableNotes ORDER BY $orderBy');
 

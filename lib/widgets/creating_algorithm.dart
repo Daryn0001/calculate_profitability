@@ -1,14 +1,22 @@
 import 'dart:ui';
 
+import 'package:calculate_profitability/db/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../model/note.dart';
+import '../pages/taskpage.dart';
+
 class CostOfCreatingAnAlgorithm extends StatefulWidget {
-   static String result =  '';
-  const CostOfCreatingAnAlgorithm({Key? key}) : super(key: key);
+  static Note? note ;
+  static String result = '';
+  static int? id;
+
+  const CostOfCreatingAnAlgorithm({Key? key, }) : super(key: key);
 
   @override
-  _CostOfCreatingAnAlgorithmState createState() => _CostOfCreatingAnAlgorithmState();
+  _CostOfCreatingAnAlgorithmState createState() =>
+      _CostOfCreatingAnAlgorithmState();
 }
 
 class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
@@ -17,44 +25,61 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
   final timeController = TextEditingController();
   double algorithmCreatingCost = 0;
   double insuranceCost = 0;
-  String salary = '',
-      timeSpend = '',
-      spendingOnInsurance = '',
-      result = '';
-
+  String salary = '', timeSpend = '', spendingOnInsurance = '', result = '';
 
   void _getAnswer(double d) {
     setState(() {
-      CostOfCreatingAnAlgorithm.result = result =  d.toString();
+      CostOfCreatingAnAlgorithm.result = result = d.toString();
     });
   }
 
-  void initValue({double? insurance, double?  sumCost}){
+
+
+  Future addNote({required double insuranceCost,
+    required double algorithmCreatingCost,
+    required int salary,
+    required double timeToCreateAlgorithm,
+    required double insuranceInPercents})
+  async {
+    final note = Note(
+      insuranceCost: insuranceCost,
+      algorithmCreatingCost: algorithmCreatingCost,
+      salary: salary,
+      timeToCreateAlgorithm: timeToCreateAlgorithm,
+      insuranceInPercents: insuranceInPercents,
+    );
+
+    //Note n = await NotesDatabase.instance.create(note);
     setState(() {
-      algorithmCreatingCost = sumCost!;
-      insuranceCost = insurance!;
+      TaskPage.note = note;
     });
+    print('new note created id: ${TaskPage.note}');
   }
-
 
   @override
   Widget build(BuildContext context) {
     return box();
   }
 
-
   Widget box() {
     return Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
         padding: const EdgeInsets.all(8),
         child: Column(children: [
+          const Text('Алгоритм құруға кеткен шығындарды есептеу:',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              )),
           RichText(
             text: const TextSpan(
                 style: TextStyle(color: Colors.black, fontSize: 18),
                 children: [
                   TextSpan(
-                      text: 'C',
-                     // style: TextStyle(color: Colors.black, fontSize: 18)
+                    text: 'C',
+                    // style: TextStyle(color: Colors.black, fontSize: 18)
                   ),
                   TextSpan(
                       text: 'ақкш',
@@ -63,8 +88,9 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
                           fontSize: 10,
                           fontFeatures: [FontFeature.subscripts()])),
                   TextSpan(text: ' = ', style: TextStyle(fontSize: 14)),
-                  TextSpan(text: 'Ж',
-                      //style: TextStyle(fontSize: 14)
+                  TextSpan(
+                    text: 'Ж',
+                    //style: TextStyle(fontSize: 14)
                   ),
                   TextSpan(
                       text: 'қ',
@@ -72,9 +98,13 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
                           fontSize: 10,
                           fontFeatures: [FontFeature.subscripts()])),
                   TextSpan(text: ' * ', style: TextStyle(fontSize: 14)),
-                  TextSpan(text: 't',),
+                  TextSpan(
+                    text: 't',
+                  ),
                   TextSpan(text: ' + ', style: TextStyle(fontSize: 14)),
-                  TextSpan(text: 'A', ),
+                  TextSpan(
+                    text: 'A',
+                  ),
                   TextSpan(
                       text: 'әс',
                       style: TextStyle(
@@ -84,32 +114,34 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
           ),
           Form(
             //autovalidateMode: AutovalidateMode.always,
-            child: Wrap(
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ConstrainedBox(
-                          constraints: BoxConstraints.tight(const Size(400, 50)),
-                          child: getInputForms(name: 'Ж', index: 'қ', controller: salaryController))
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ConstrainedBox(
-                          constraints: BoxConstraints.tight(const Size(400, 50)),
-                          child: getInputForms(name: 'Т', controller: timeController))
-                  ),
-                  Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ConstrainedBox(
-                          constraints: BoxConstraints.tight(const Size(400, 50)),
-                          child: getInputForms(name: 'А', index: 'әс', controller: insuranceController))
-                  )
-                ]
-            ),
+            child: Wrap(children: [
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ConstrainedBox(
+                      constraints: BoxConstraints.tight(const Size(400, 50)),
+                      child: getInputForms(
+                          name: 'Ж',
+                          index: 'қ',
+                          controller: salaryController))),
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ConstrainedBox(
+                      constraints: BoxConstraints.tight(const Size(400, 50)),
+                      child: getInputForms(
+                          name: 'Т', controller: timeController))),
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ConstrainedBox(
+                      constraints: BoxConstraints.tight(const Size(400, 50)),
+                      child: getInputForms(
+                          name: 'А',
+                          index: 'әс',
+                          controller: insuranceController)))
+            ]),
           ),
           Container(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async{
                 RegExp isDigit = RegExp(r'[0-9]\.?[0-9]?');
                 if (salaryController.text.isNotEmpty &&
                     insuranceController.text.isNotEmpty &&
@@ -117,25 +149,29 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
                     isDigit.hasMatch(salaryController.text) &&
                     isDigit.hasMatch(insuranceController.text) &&
                     isDigit.hasMatch(timeController.text)) {
-                  double n1 = double.parse(salaryController.text);
-                  double n2 = double.parse(timeController.text);
-                  double n3 = double.parse(insuranceController.text);
-                  double d0 = ((n1 * n3) / 100);
-                  double d1  =  n1 * n2 + d0;
+                  int salary = int.parse(salaryController.text);
+                  double timeToCreateAlgorithm = double.parse(timeController.text);
+                  double insuranceInPercents = double.parse(insuranceController.text);
+                  double insuranceCost = ((salary * insuranceInPercents) / 100);
+                  double algorithmCreatingCost = salary * timeToCreateAlgorithm + insuranceCost;
 
-                  initValue(insurance: d0, sumCost: d1);
-
-
-                  _getAnswer(d1);
+                  await addNote(
+                    insuranceCost: insuranceCost,
+                    algorithmCreatingCost: algorithmCreatingCost,
+                    salary: salary,
+                    timeToCreateAlgorithm: timeToCreateAlgorithm,
+                    insuranceInPercents: insuranceInPercents,
+                  );
+                    print('CostOfCreatingAnAlgorithm.id: ${ CostOfCreatingAnAlgorithm.id}');
+                  _getAnswer(algorithmCreatingCost);
                   salaryController.text = '${salaryController.text} тг';
                   insuranceController.text = '${insuranceController.text}%';
                   timeController.text = '${timeController.text} ай';
-
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
                         content:
-                        Text('Alert', style: TextStyle(color: Colors.red))),
+                            Text('Alert', style: TextStyle(color: Colors.red))),
                   );
                 }
               },
@@ -166,13 +202,12 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
   }
 
   Widget getInputForms({required name, index = '', required controller}) {
-
     return Container(
       child: ListTile(
         leading: RichText(
           text:
-          TextSpan(style: const TextStyle(color: Colors.black), children: [
-            TextSpan(text: name, style:const TextStyle(fontSize: 18)),
+              TextSpan(style: const TextStyle(color: Colors.black), children: [
+            TextSpan(text: name, style: const TextStyle(fontSize: 18)),
             TextSpan(
                 text: index,
                 style: const TextStyle(
@@ -224,5 +259,4 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
       ),
     );
   }
-
 }

@@ -4,9 +4,12 @@ import 'package:calculate_profitability/widgets/creating_algorithm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../model/note.dart';
+import '../widgets/calculate_machine_time_hour.dart';
 import '../widgets/creating_programm.dart';
 
 class TaskPage extends StatefulWidget {
+  static Note note = Note();
   const TaskPage({Key? key}) : super(key: key);
 
   @override
@@ -14,6 +17,7 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
+
   double algorithmCreatingCost = 0;
   double insuranceCost = 0;
   var algosCost;
@@ -34,17 +38,6 @@ class _TaskPageState extends State<TaskPage> {
   }
 
 
-  Widget getAlgorithmCost() {
-     algosCost  = const CostOfCreatingAnAlgorithm();
-    String result = CostOfCreatingAnAlgorithm.result;
-    print('result: $result');
-    return Container(child: algosCost);
-  }
-
-  Widget getProgramCost(){
-    programCost = const CostOfCreatingProgram();
-    return Container(child: programCost );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +47,19 @@ class _TaskPageState extends State<TaskPage> {
           child: Container(
               color: Colors.white70,
               child: Column(
+
                 children: [
                   getDescription(),
                   getAlgorithmCost(),
                   getProgramCost(),
+                  getCostOfMachineTimeHour(),
 
                 ],
               )),
         ));
   }
+
+
 
 // ! cost of creating an algorithm
 
@@ -84,53 +81,26 @@ class _TaskPageState extends State<TaskPage> {
       ),
     );
   }
+
+// ! 4.1
+  Widget getAlgorithmCost() {
+    algosCost  = const CostOfCreatingAnAlgorithm();
+    String result = CostOfCreatingAnAlgorithm.result;
+    print('result: $result');
+    return Container(child: algosCost);
+  }
+
+  // ! 4.2
+  Widget getProgramCost(){
+    programCost = const CostOfCreatingProgram();
+    return Container(child: programCost );
+  }
+
+  //! 4.2.1
+Widget getCostOfMachineTimeHour(){
+
+    return Container(child: const CostOfMachineTimeHour());
 }
 
-/*Container(
-            child: ListTile(
-              leading: RichText(
-                text: const TextSpan(
-                    style: TextStyle(color: Colors.black),
-                    children: [
-                      TextSpan(text: 'Ж', style: TextStyle(fontSize: 18)),
-                      TextSpan(
-                          text: 'қ',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFeatures: [FontFeature.subscripts()])),
-                    ]),
-              ),
-              title: getInputField(hintText: 'first', controller: first),
-            ),
-          ),
-          Container(
-            child: ListTile(
+}
 
-              leading: RichText(
-                text: const TextSpan(
-                    style: TextStyle(color: Colors.black),
-                    children: [
-                      TextSpan(text: 'T', style: TextStyle(fontSize: 18)),
-
-                    ]),
-              ),
-              title: getInputField(hintText: 'second', controller: second),
-            ),
-          ),
-          Container(
-            child: ListTile(
-              leading: RichText(
-                text: const TextSpan(
-                    style: TextStyle(color: Colors.black),
-                    children: [
-                      TextSpan(text: 'А', style: TextStyle(fontSize: 18)),
-                      TextSpan(
-                          text: 'әс',
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFeatures: [FontFeature.subscripts()])),
-                    ]),
-              ),
-              title: getInputField(hintText: 'third', controller: third),
-            ),
-          ),*/

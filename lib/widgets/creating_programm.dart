@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import '../db/database_helper.dart';
+import '../pages/taskpage.dart';
+
 
 class CostOfCreatingProgram extends StatefulWidget {
-  static String result = '';
   const CostOfCreatingProgram({Key? key}) : super(key: key);
 
   @override
@@ -12,27 +14,50 @@ class CostOfCreatingProgram extends StatefulWidget {
 }
 
 class _CostOfCreatingProgramState extends State<CostOfCreatingProgram> {
+
   final fixController = TextEditingController();
-  final insuranceController = TextEditingController();
+  //final insuranceController = TextEditingController();
   final salaryController = TextEditingController();
   final hourController = TextEditingController();
   final dayController = TextEditingController();
   final costPerHourController = TextEditingController();
-  String costOfMachineTime = '',
-      hour = '',
-      day = '',
-      costPerHour = '',
-      tieForFix = '',
-      salary = '',
-      spendingOnInsurance = '',
-      result = '';
+  String result = '';
 
 
   void _getAnswer(double d) {
     setState(() {
-      CostOfCreatingProgram.result = result = d.toString();
+      result = d.toString();
     });
   }
+
+
+  Future addNote({
+    required double programCreatingCost,
+    required double costOfMachineTime,
+    required int hour,
+    required int day,
+    required int costPerHour,
+    required double costForWritingAndCorrecting,
+    required double timeForFix,
+    required int programmerSalary
+  })
+  async {
+
+    TaskPage.note.programCreatingCost = programCreatingCost;
+    TaskPage.note.costOfMachineTime = costOfMachineTime;
+    TaskPage.note.hour = hour;
+    TaskPage.note.day = day;
+    TaskPage.note.costPerHour = costPerHour;
+    TaskPage.note.costForWritingAndCorrecting = costForWritingAndCorrecting;
+    TaskPage.note.timeForFix = timeForFix;
+    TaskPage.note.programmerSalary = programmerSalary;
+
+
+    //await NotesDatabase.instance.update(TaskPage.note);
+
+    print('note updated: ${TaskPage.note}');
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +70,13 @@ class _CostOfCreatingProgramState extends State<CostOfCreatingProgram> {
         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
         padding: const EdgeInsets.all(8),
         child: Column(children: [
+          const Text('Программа жазуға және түзеуге кеткен шығындарды есептеу:',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              )),
           RichText(
             text: const TextSpan(
                 style: TextStyle(color: Colors.black, fontSize: 18),
@@ -174,42 +206,49 @@ class _CostOfCreatingProgramState extends State<CostOfCreatingProgram> {
                           constraints: BoxConstraints.tight(const Size(400, 50)),
                           child: getInputForms(name: 'Ж', index: 'пж',  controller: salaryController))
                   ),
-                  Padding(
-                      padding: const EdgeInsets.all(8),
-                      child: ConstrainedBox(
-                          constraints: BoxConstraints.tight(const Size(400, 50)),
-                          child: getInputForms(name: 'А', index: 'әсш',   controller: insuranceController))
-                  )
                 ]
             ),
           ),
           Container(
             child: ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 RegExp isDigit = RegExp(r'[0-9]\.?[0-9]?');
                 if (salaryController.text.isNotEmpty &&
-                    insuranceController.text.isNotEmpty &&
                     costPerHourController.text.isNotEmpty &&
                     hourController.text.isNotEmpty &&
                     dayController.text.isNotEmpty &&
                     fixController.text.isNotEmpty &&
                     isDigit.hasMatch(salaryController.text) &&
-                    isDigit.hasMatch(insuranceController.text) &&
                     isDigit.hasMatch(costPerHourController.text) &&
                     isDigit.hasMatch(hourController.text) &&
                     isDigit.hasMatch(dayController.text) &&
                     isDigit.hasMatch(fixController.text)) {
-                  double n1 = double.parse(hourController.text);
-                  double n2 = double.parse(dayController.text);
-                  double n3 = double.parse(costPerHourController.text);
-                  double n4 = double.parse(fixController.text);
-                  double n5 = double.parse(salaryController.text);
-                  double n6 = double.parse(insuranceController.text);
-                  double d1 = (n1 * n2 * n3) + n4 * n5 + n6;
+                  int hour = int.parse(hourController.text);
+                  int day = int.parse(dayController.text);
+                  int costPerHour = int.parse(costPerHourController.text);
+                  double timeForFix = double.parse(fixController.text);
+                  int programmerSalary = int.parse(salaryController.text);
+                  double costOfMachineTime = (hour * day * costPerHour) * 1.0;
+                  double costForWritingAndCorrecting = timeForFix * programmerSalary + TaskPage.note.insuranceCost;
+                  double programCreatingCost = costOfMachineTime + costForWritingAndCorrecting;
 
-                  _getAnswer(d1);
-                  salaryController.text = '${salaryController.text} тг';
-                  insuranceController.text = '${insuranceController.text} тг';
+
+                 await addNote(
+                     programCreatingCost: programCreatingCost,
+                     costOfMachineTime: costOfMachineTime,
+                     hour: hour,
+                     day: day,
+                     costPerHour: costPerHour,
+                     costForWritingAndCorrecting: costForWritingAndCorrecting,
+                     timeForFix: timeForFix,
+                     programmerSalary: programmerSalary
+                  );
+
+                  _getAnswer(programCreatingCost);
+                  hourController.text = '${hourController.text} сағат';
+                  dayController.text = '${dayController.text} күн';
+                  costPerHourController.text = '${costPerHourController.text} теңге';
+                  salaryController.text = '${salaryController.text} теңге';
                   fixController.text = '${fixController.text} ай';
 
                 } else {
