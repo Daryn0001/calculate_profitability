@@ -5,7 +5,7 @@ class Timecall extends StatelessWidget {
 
   int nowtime = DateTime.now().hour;
   String timeCall() {
-    print(nowtime);
+
     if (nowtime <= 4) {
       text = "Қайырлы түн  🌙";
     }
@@ -14,9 +14,9 @@ class Timecall extends StatelessWidget {
     }
     else if (nowtime > 11 && nowtime < 16) {
       text = "Қайырлы күн  🌞";
-    } else if (nowtime >= 16 && nowtime < 18){
+    } else if (nowtime >= 16 && nowtime < 22){
       text = "Қайырлы кеш  🌆";
-    }else if (nowtime >= 18) {
+    }else if (nowtime >= 22) {
       text = "Қайырлы түн  🌙";
     }
 

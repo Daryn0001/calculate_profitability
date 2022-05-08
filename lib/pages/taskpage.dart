@@ -2,11 +2,12 @@ import 'dart:ui';
 
 import 'package:calculate_profitability/widgets/creating_algorithm.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import '../model/note.dart';
+import '../widgets/implementing_program.dart';
 import '../widgets/calculate_machine_time_hour.dart';
 import '../widgets/creating_programm.dart';
+import '../widgets/technical_equipment.dart';
 
 class TaskPage extends StatefulWidget {
   static Note note = Note();
@@ -27,14 +28,13 @@ class _TaskPageState extends State<TaskPage> {
       'техникалық құралдар кешеніне кеткен шығындар, программа жасауға және түзетуге кеткен шығындар, '
       'ақпарат өнімділігі есептеу';
 
-  String answer = '0', v1 = '0', v2 = '', v3 = '';
 
-  String initValue(String s) {
+
+   initValue(String s) {
     setState(() {
-      v1 = s;
-      print('v1: $v1');
+
     });
-    return v1;
+
   }
 
 
@@ -45,14 +45,18 @@ class _TaskPageState extends State<TaskPage> {
         appBar: AppBar(),
         body: SingleChildScrollView(
           child: Container(
-              color: Colors.white70,
+              //color: Colors.white70,
               child: Column(
 
                 children: [
                   getDescription(),
+
                   getAlgorithmCost(),
-                  getProgramCost(),
+                  getTechnicalEquipmentCost(),
                   getCostOfMachineTimeHour(),
+                  getProgramCost(),
+
+                  const ImplementingProgramCost(),
 
                 ],
               )),
@@ -61,7 +65,6 @@ class _TaskPageState extends State<TaskPage> {
 
 
 
-// ! cost of creating an algorithm
 
   Widget getDescription() {
     return Container(
@@ -81,8 +84,8 @@ class _TaskPageState extends State<TaskPage> {
       ),
     );
   }
-
-// ! 4.1
+// !
+/// ! 4.1 point: cost of creating an algorithm
   Widget getAlgorithmCost() {
     algosCost  = const CostOfCreatingAnAlgorithm();
     String result = CostOfCreatingAnAlgorithm.result;
@@ -90,7 +93,13 @@ class _TaskPageState extends State<TaskPage> {
     return Container(child: algosCost);
   }
 
-  // ! 4.2
+  /// ! 4.1.2 point: cost of Technical Equipment
+  Widget getTechnicalEquipmentCost() {
+    return const TechnicalEquipmentCost();
+  }
+
+
+  /// ! 4.2 point: cost of creating an program
   Widget getProgramCost(){
     programCost = const CostOfCreatingProgram();
     return Container(child: programCost );
@@ -99,7 +108,7 @@ class _TaskPageState extends State<TaskPage> {
   //! 4.2.1
 Widget getCostOfMachineTimeHour(){
 
-    return Container(child: const CostOfMachineTimeHour());
+    return const CostOfMachineTimeHour();
 }
 
 }

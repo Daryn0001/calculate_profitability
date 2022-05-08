@@ -55,7 +55,7 @@ class _CostOfCreatingProgramState extends State<CostOfCreatingProgram> {
 
     //await NotesDatabase.instance.update(TaskPage.note);
 
-    print('note updated: ${TaskPage.note}');
+    print('$runtimeType note updated: ${TaskPage.note}\n');
   }
 
 

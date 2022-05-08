@@ -62,27 +62,38 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
     });
   }
 
-  Future addNote(
-      {required double programCreatingCost,
-      required double costOfMachineTime,
-      required int hour,
-      required int day,
-      required int costPerHour,
-      required double costForWritingAndCorrecting,
-      required double timeForFix,
-      required int programmerSalary}) async {
-    TaskPage.note.programCreatingCost = programCreatingCost;
-    TaskPage.note.costOfMachineTime = costOfMachineTime;
-    TaskPage.note.hour = hour;
-    TaskPage.note.day = day;
-    TaskPage.note.costPerHour = costPerHour;
-    TaskPage.note.costForWritingAndCorrecting = costForWritingAndCorrecting;
-    TaskPage.note.timeForFix = timeForFix;
+  Future addNote({
+    required initialPrice,
+    required annualDepreciationPercentage,
+    required requiredPower,
+    required operatingTime,
+    required electricityTariff,
+    required programmerSalary,
+    required numberOfComputers,
+    required workingDayPerMonth,
+    required hourlyWorkingDayRate,
+    required depreciationPerMonth,
+    required electricityConsumedPerMonth,
+    required maintenanceCostsPerMonth,
+    required costOfMachineTimeHours,
+  }) async {
+    TaskPage.note.initialPrice = initialPrice;
+    TaskPage.note.annualDepreciationPercentage = annualDepreciationPercentage;
+    TaskPage.note.requiredPower = requiredPower;
+    TaskPage.note.operatingTime = operatingTime;
+    TaskPage.note.electricityTariff = electricityTariff;
     TaskPage.note.programmerSalary = programmerSalary;
+    TaskPage.note.numberOfComputers = numberOfComputers;
+    TaskPage.note.workingDayPerMonth = workingDayPerMonth;
+    TaskPage.note.hourlyWorkingDayRate = hourlyWorkingDayRate;
+    TaskPage.note.depreciationPerMonth = depreciationPerMonth;
+    TaskPage.note.electricityConsumedPerMonth = electricityConsumedPerMonth;
+    TaskPage.note.maintenanceCostsPerMonth = maintenanceCostsPerMonth;
+    TaskPage.note.costOfMachineTimeHours = costOfMachineTimeHours;
 
     //await NotesDatabase.instance.update(TaskPage.note);
 
-    print('note updated: ${TaskPage.note}');
+    print('$runtimeType note updated: ${TaskPage.note}\n');
   }
 
   @override
@@ -287,28 +298,43 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
           ),
           Form(
             child: Wrap(children: [
-              getInputForms(name: 'S', type: 'теңге', controller: initialPriceController),
+              getInputForms(
+                  name: 'S', type: 'теңге', controller: initialPriceController),
               getInputForms(
                   name: 'q',
                   index: 'аморт',
                   type: '%',
                   controller: annualDepreciationPercentageController),
-              getInputForms(name: 'w', type: 'кВт/сағ', controller: requiredPowerController),
-              getInputForms(name: 't', type: 'сағат', controller: operatingTimeController),
-              getInputForms(name: 'T', type: 'теңге', controller: electricityTariffController),
+              getInputForms(
+                  name: 'w',
+                  type: 'кВт/сағ',
+                  controller: requiredPowerController),
+              getInputForms(
+                  name: 't',
+                  type: 'сағат',
+                  controller: operatingTimeController),
+              getInputForms(
+                  name: 'T',
+                  type: 'теңге',
+                  controller: electricityTariffController),
               getInputForms(
                   name: 'Q',
                   index: 'c',
                   type: 'теңге',
                   controller: programmerSalaryController),
-              getInputForms(name: 'n', type: 'дана', controller: numberOfComputersController),
+              getInputForms(
+                  name: 'n',
+                  type: 'дана',
+                  controller: numberOfComputersController),
               getInputForms(
                   name: 'D',
                   index: 'p',
                   type: 'күн',
                   controller: workingDayPerMonthController),
               getInputForms(
-                  name: 'r', type: 'сағат', controller: hourlyWorkingDayRateController),
+                  name: 'r',
+                  type: 'сағат',
+                  controller: hourlyWorkingDayRateController),
             ]),
           ),
           Container(
@@ -348,31 +374,42 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                       int.parse(programmerSalaryController.text).toInt();
                   numberOfComputers =
                       int.parse(numberOfComputersController.text).toInt();
-                  workingDayPerMonth = int.parse(workingDayPerMonthController.text).toInt();
+                  workingDayPerMonth =
+                      int.parse(workingDayPerMonthController.text).toInt();
                   hourlyWorkingDayRate =
                       int.parse(hourlyWorkingDayRateController.text).toInt();
 
-                  print('initialPrice: $initialPrice '
-                      'annualDepreciationPercentage: $annualDepreciationPercentage '
-                      'requiredPower: $requiredPower '
-                      'operatingTime: $operatingTime '
-                      'electricityTariff: $electricityTariff '
-                      'programmerSalary $programmerSalary '
-                      'numberOfComputers: $numberOfComputers '
-                      'workingDayPerMonth: $workingDayPerMonth '
-                      'hourlyWorkingDayRate: $hourlyWorkingDayRate');
+
 
                   depreciationPerMonth =
-                      (initialPrice * (annualDepreciationPercentage / 100)) / 12;
+                      (initialPrice * (annualDepreciationPercentage / 100)) /
+                          12;
                   electricityConsumedPerMonth =
                       requiredPower * operatingTime * electricityTariff;
                   maintenanceCostsPerMonth =
                       programmerSalary / numberOfComputers;
-                  costOfMachineTimeHours =
-                      ((depreciationPerMonth +
+                  costOfMachineTimeHours = ((depreciationPerMonth +
                               electricityConsumedPerMonth +
                               maintenanceCostsPerMonth) /
-                          (workingDayPerMonth * hourlyWorkingDayRate)).round();
+                          (workingDayPerMonth * hourlyWorkingDayRate))
+                      .round();
+
+                  addNote(
+                    initialPrice: initialPrice,
+                    annualDepreciationPercentage: annualDepreciationPercentage,
+                    requiredPower: requiredPower,
+                    operatingTime: operatingTime,
+                    electricityTariff: electricityTariff,
+                    programmerSalary: programmerSalary,
+                    numberOfComputers: numberOfComputers,
+                    workingDayPerMonth: workingDayPerMonth,
+                    hourlyWorkingDayRate: hourlyWorkingDayRate,
+                    depreciationPerMonth: depreciationPerMonth,
+                    electricityConsumedPerMonth: electricityConsumedPerMonth,
+                    maintenanceCostsPerMonth: maintenanceCostsPerMonth,
+                    costOfMachineTimeHours: costOfMachineTimeHours,
+                  );
+
 
                   _getAnswer(costOfMachineTimeHours);
                 } else {
@@ -400,9 +437,8 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
         ]));
   }
 
-  void a({listOfControllers}) {}
-
-  Widget getInputForms({required name, index = '', required controller, required type}) {
+  Widget getInputForms(
+      {required name, index = '', required controller, required type}) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: ConstrainedBox(
@@ -416,7 +452,6 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
           ),
           title: getInputField(controller: controller),
           trailing: Text(type, style: const TextStyle(fontSize: 12)),
-
         ),
       ),
     );

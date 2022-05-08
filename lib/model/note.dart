@@ -1,8 +1,9 @@
-const String tableNotes = 'notes2';
+const String tableNotes = 'notes';
 
 class NoteFields {
   static final List<String> values = [
     id,
+    totalCostForCreationAndImplementing,
     algorithmCreatingCost,
     salary,
     timeToCreateAlgorithm,
@@ -15,10 +16,33 @@ class NoteFields {
     costPerHour,
     costForWritingAndCorrecting,
     timeForFix,
-    programmerSalary
+    numberOfComputers,
+    programmerSalary,
+
+    technicalEquipmentCosts,
+    quantityOfComputers,
+    costOfOneComputer,
+    quantityOfPrinters,
+    costOfOnePrinter,
+    costOfMachineTimeHours,
+    depreciationPerMonth,
+    electricityConsumedPerMonth,
+    maintenanceCostsPerMonth,
+    workingDayPerMonth,
+    hourlyWorkingDayRate,
+    initialPrice,
+    annualDepreciationPercentage,
+    requiredPower,
+    operatingTime,
+    electricityTariff,
+    programmerSalary2,
+    costOfImplementingProgram,
   ];
 
   static const String id = '_id';
+
+  // ? 4.0
+  static const String totalCostForCreationAndImplementing = 'totalCostForCreationAndImplementing';
 
   //? 4.1
   static const String algorithmCreatingCost = 'algorithmCreatingCost';
@@ -27,22 +51,47 @@ class NoteFields {
   static const String insuranceInPercents = 'insuranceInPercents';
   static const String insuranceCost = 'insuranceCost';
 
+  // ? 4.1.2
+  static const technicalEquipmentCosts = 'technicalEquipmentCosts';
+  static const quantityOfComputers = 'quantityOfComputers';
+  static const costOfOneComputer = 'costOfOneComputer';
+  static const quantityOfPrinters = 'quantityOfPrinters';
+  static const costOfOnePrinter = 'costOfOnePrinter';
+
   // ? 4.2
   static const String programCreatingCost = 'programCreatingCost';
-
   static const String costOfMachineTime = 'costOfMachineTime';
   static const String hour = 'hour';
   static const String day = 'day';
   static const String costPerHour = 'costPerHour';
-
   static const String costForWritingAndCorrecting =
       'costForWritingAndCorrecting';
   static const String timeForFix = 'timeForFix';
   static const String programmerSalary = 'programmerSalary';
+  static const String numberOfComputers = 'numberOfComputers';
+
+  // ? 4.2.1
+  static const costOfMachineTimeHours = 'costOfMachineTimeHours';
+  static const depreciationPerMonth = 'depreciationPerMonth';
+  static const electricityConsumedPerMonth = 'electricityConsumedPerMonth';
+  static const maintenanceCostsPerMonth = 'maintenanceCostsPerMonth';
+  static const workingDayPerMonth = 'workingDayPerMonth';
+  static const hourlyWorkingDayRate = 'hourlyWorkingDayRate';
+  static const initialPrice = 'initialPrice';
+  static const annualDepreciationPercentage = 'annualDepreciationPercentage';
+  static const requiredPower = 'requiredPower';
+  static const operatingTime = 'operatingTime';
+  static const electricityTariff = 'electricityTariff';
+  static const programmerSalary2 = 'programmerSalary2';
+
+  // ? 4.3
+  static const costOfImplementingProgram = 'costOfImplementingProgram';
 }
 
 class Note {
   final int? id;
+  // ? 4.0
+  int totalCostForCreationAndImplementing;
 
   //? 4.1
   double algorithmCreatingCost;
@@ -50,6 +99,13 @@ class Note {
   double timeToCreateAlgorithm;
   double insuranceInPercents;
   double insuranceCost;
+
+  // ? 4.1.2
+  int technicalEquipmentCosts;
+  int quantityOfComputers;
+  int costOfOneComputer;
+  int quantityOfPrinters;
+  int costOfOnePrinter;
 
   // ? 4.2
   double programCreatingCost;
@@ -62,41 +118,74 @@ class Note {
   double costForWritingAndCorrecting;
   double timeForFix;
   int programmerSalary;
-  int costOfMachineTimeHours = 0;
-  double depreciationPerMonth = 0;
-  double electricityConsumedPerMonth = 0;
-  double maintenanceCostsPerMonth = 0;
-  int workingDayPerMonth = 0;
-  int hourlyWorkingDayRate = 0;
 
-  int initialPrice = 0;
-  double annualDepreciationPercentage = 0;
-  double requiredPower = 0;
-  double operatingTime = 0;
-  double electricityTariff = 0;
+  // ? 4.2.1
+  int costOfMachineTimeHours;
+  double depreciationPerMonth;
+  double electricityConsumedPerMonth;
+  double maintenanceCostsPerMonth;
+  int workingDayPerMonth;
+  int hourlyWorkingDayRate;
+  int initialPrice;
+  double annualDepreciationPercentage;
+  double requiredPower;
+  double operatingTime;
+  double electricityTariff;
+  int programmerSalary2;
+  int numberOfComputers;
 
-  int programmerSalary2 = 0;
-  int numberOfComputers = 0;
+
+
+  // ? 4.3
+  int costOfImplementingProgram;
+
+
 
   Note({
-      this.id,
-      this.algorithmCreatingCost = 0,
-      this.salary = 0,
-      this.timeToCreateAlgorithm = 0,
-      this.insuranceInPercents = 0,
-      this.insuranceCost = 0,
-      this.programCreatingCost = 0,
-      this.costOfMachineTime = 0,
-      this.hour = 0,
-      this.day = 0,
-      this.costPerHour = 0,
-      this.costForWritingAndCorrecting = 0,
-      this.timeForFix = 0,
-      this.programmerSalary = 0
+    this.id,
+
+    this.totalCostForCreationAndImplementing = 0,
+
+    this.algorithmCreatingCost = 0,
+    this.salary = 0,
+    this.timeToCreateAlgorithm = 0,
+    this.insuranceInPercents = 0,
+    this.insuranceCost = 0,
+    this.programCreatingCost = 0,
+    this.costOfMachineTime = 0,
+    this.hour = 0,
+    this.day = 0,
+    this.costPerHour = 0,
+    this.costForWritingAndCorrecting = 0,
+    this.timeForFix = 0,
+    this.programmerSalary = 0,
+    // !
+    this.costOfMachineTimeHours = 0,
+    this.depreciationPerMonth = 0,
+    this.electricityConsumedPerMonth = 0,
+    this.maintenanceCostsPerMonth = 0,
+    this.workingDayPerMonth = 0,
+    this.hourlyWorkingDayRate = 0,
+    this.initialPrice = 0,
+    this.annualDepreciationPercentage = 0,
+    this.requiredPower = 0,
+    this.operatingTime = 0,
+    this.electricityTariff = 0,
+    this.numberOfComputers = 0,
+    this.programmerSalary2 = 0,
+
+    this.technicalEquipmentCosts = 0,
+    this.quantityOfComputers = 0,
+    this.costOfOneComputer = 0,
+    this.quantityOfPrinters = 0,
+    this.costOfOnePrinter = 0,
+
+    this.costOfImplementingProgram = 0,
   });
 
   Map<String, dynamic> toJson() => {
         NoteFields.id: id,
+        NoteFields.totalCostForCreationAndImplementing: totalCostForCreationAndImplementing,
         NoteFields.algorithmCreatingCost: algorithmCreatingCost,
         NoteFields.salary: salary,
         NoteFields.timeToCreateAlgorithm: timeToCreateAlgorithm,
@@ -109,28 +198,79 @@ class Note {
         NoteFields.costPerHour: costPerHour,
         NoteFields.costForWritingAndCorrecting: costForWritingAndCorrecting,
         NoteFields.timeForFix: timeForFix,
-        NoteFields.programmerSalary: programmerSalary
+        NoteFields.programmerSalary: programmerSalary,
+        NoteFields.costOfMachineTimeHours: costOfMachineTimeHours,
+        NoteFields.depreciationPerMonth: depreciationPerMonth,
+        NoteFields.electricityConsumedPerMonth: electricityConsumedPerMonth,
+        NoteFields.maintenanceCostsPerMonth: maintenanceCostsPerMonth,
+        NoteFields.workingDayPerMonth: workingDayPerMonth,
+        NoteFields.hourlyWorkingDayRate: hourlyWorkingDayRate,
+        NoteFields.initialPrice: initialPrice,
+        NoteFields.annualDepreciationPercentage: annualDepreciationPercentage,
+        NoteFields.requiredPower: requiredPower,
+        NoteFields.operatingTime: operatingTime,
+        NoteFields.electricityTariff: electricityTariff,
+        NoteFields.numberOfComputers: numberOfComputers,
+        NoteFields.programmerSalary2: programmerSalary2,
+
+        NoteFields.technicalEquipmentCosts: technicalEquipmentCosts,
+        NoteFields.quantityOfComputers: quantityOfComputers,
+        NoteFields.costOfOneComputer: costOfOneComputer,
+        NoteFields.quantityOfPrinters: quantityOfPrinters,
+        NoteFields.costOfOnePrinter: costOfOnePrinter,
+
+        NoteFields.costOfImplementingProgram: costOfImplementingProgram,
+
+
       };
 
   static Note fromJson(Map<String, dynamic> json) => Note(
-      id: json[NoteFields.id] as int?,
-      algorithmCreatingCost: json[NoteFields.algorithmCreatingCost] as double,
-      salary: json[NoteFields.salary] as int,
-      timeToCreateAlgorithm: json[NoteFields.timeToCreateAlgorithm] as double,
-      insuranceInPercents: json[NoteFields.insuranceInPercents] as double,
-      insuranceCost: json[NoteFields.insuranceCost] as double,
-      programCreatingCost: json[NoteFields.programCreatingCost] as double,
-      costOfMachineTime: json[NoteFields.costOfMachineTime] as double,
-      hour: json[NoteFields.hour] as int,
-      day: json[NoteFields.day] as int,
-      costPerHour: json[NoteFields.costPerHour] as int,
-      costForWritingAndCorrecting:
-          json[NoteFields.costForWritingAndCorrecting] as double,
-      timeForFix: json[NoteFields.timeForFix] as double,
-      programmerSalary: json[NoteFields.programmerSalary] as int);
+        id: json[NoteFields.id] as int?,
+        totalCostForCreationAndImplementing: json[NoteFields.totalCostForCreationAndImplementing] as int,
+        algorithmCreatingCost: json[NoteFields.algorithmCreatingCost] as double,
+        salary: json[NoteFields.salary] as int,
+        timeToCreateAlgorithm: json[NoteFields.timeToCreateAlgorithm] as double,
+        insuranceInPercents: json[NoteFields.insuranceInPercents] as double,
+        insuranceCost: json[NoteFields.insuranceCost] as double,
+        programCreatingCost: json[NoteFields.programCreatingCost] as double,
+        costOfMachineTime: json[NoteFields.costOfMachineTime] as double,
+        hour: json[NoteFields.hour] as int,
+        day: json[NoteFields.day] as int,
+        costPerHour: json[NoteFields.costPerHour] as int,
+        costForWritingAndCorrecting:
+            json[NoteFields.costForWritingAndCorrecting] as double,
+        timeForFix: json[NoteFields.timeForFix] as double,
+        programmerSalary: json[NoteFields.programmerSalary] as int,
+        costOfMachineTimeHours: json[NoteFields.costOfMachineTimeHours] as int,
+        depreciationPerMonth: json[NoteFields.depreciationPerMonth] as double,
+        electricityConsumedPerMonth:
+            json[NoteFields.electricityConsumedPerMonth] as double,
+        maintenanceCostsPerMonth:
+            json[NoteFields.maintenanceCostsPerMonth] as double,
+        workingDayPerMonth: json[NoteFields.workingDayPerMonth] as int,
+        hourlyWorkingDayRate: json[NoteFields.hourlyWorkingDayRate] as int,
+        initialPrice: json[NoteFields.initialPrice] as int,
+        annualDepreciationPercentage:
+            json[NoteFields.annualDepreciationPercentage] as double,
+        requiredPower: json[NoteFields.requiredPower] as double,
+        operatingTime: json[NoteFields.operatingTime] as double,
+        electricityTariff: json[NoteFields.electricityTariff] as double,
+        numberOfComputers: json[NoteFields.numberOfComputers] as int,
+        programmerSalary2: json[NoteFields.programmerSalary2] as int,
+
+        technicalEquipmentCosts:
+            json[NoteFields.technicalEquipmentCosts] as int,
+        quantityOfComputers: json[NoteFields.quantityOfComputers] as int,
+        costOfOneComputer: json[NoteFields.costOfOneComputer] as int,
+        quantityOfPrinters: json[NoteFields.quantityOfPrinters] as int,
+        costOfOnePrinter: json[NoteFields.costOfOnePrinter] as int,
+
+      costOfImplementingProgram: json[NoteFields.costOfImplementingProgram] as int,
+      );
 
   Note copy({
     int? id,
+    int? totalCostForCreationAndImplementing,
     double? algorithmCreatingCost,
     int? salary,
     double? timeToCreateAlgorithm,
@@ -144,41 +284,111 @@ class Note {
     double? costForWritingAndCorrecting,
     double? timeForFix,
     int? programmerSalary,
+    int? costOfMachineTimeHours,
+    double? depreciationPerMonth,
+    double? electricityConsumedPerMonth,
+    double? maintenanceCostsPerMonth,
+    int? workingDayPerMonth,
+    int? hourlyWorkingDayRate,
+    int? initialPrice,
+    int? numberOfComputers,
+    double? annualDepreciationPercentage,
+    double? requiredPower,
+    double? operatingTime,
+    double? electricityTariff,
+    int? programmerSalary2,
+
+    int? technicalEquipmentCosts,
+    int? quantityOfComputers,
+    int? costOfOneComputer,
+    int? quantityOfPrinters,
+    int? costOfOnePrinter,
+
+    int? costOfImplementingProgram
   }) =>
       Note(
-          id: id ?? this.id,
-          algorithmCreatingCost:
-              algorithmCreatingCost ?? this.algorithmCreatingCost,
-          salary: salary ?? this.salary,
-          timeToCreateAlgorithm:
-              timeToCreateAlgorithm ?? this.timeToCreateAlgorithm,
-          insuranceInPercents: insuranceInPercents ?? this.insuranceInPercents,
-          insuranceCost: insuranceCost ?? this.insuranceCost,
-          programCreatingCost: programCreatingCost ?? this.programCreatingCost,
-          costOfMachineTime: costOfMachineTime ?? this.costOfMachineTime,
-          hour: hour ?? this.hour,
-          day: day ?? this.day,
-          costPerHour: costPerHour ?? this.costPerHour,
-          costForWritingAndCorrecting:
-              costForWritingAndCorrecting ?? this.costForWritingAndCorrecting,
-          timeForFix: timeForFix ?? this.timeForFix,
-          programmerSalary: programmerSalary ?? this.programmerSalary);
+        id: id ?? this.id,
+        totalCostForCreationAndImplementing: totalCostForCreationAndImplementing ?? this.totalCostForCreationAndImplementing,
+        algorithmCreatingCost:
+            algorithmCreatingCost ?? this.algorithmCreatingCost,
+        salary: salary ?? this.salary,
+        timeToCreateAlgorithm:
+            timeToCreateAlgorithm ?? this.timeToCreateAlgorithm,
+        insuranceInPercents: insuranceInPercents ?? this.insuranceInPercents,
+        insuranceCost: insuranceCost ?? this.insuranceCost,
+        programCreatingCost: programCreatingCost ?? this.programCreatingCost,
+        costOfMachineTime: costOfMachineTime ?? this.costOfMachineTime,
+        hour: hour ?? this.hour,
+        day: day ?? this.day,
+        costPerHour: costPerHour ?? this.costPerHour,
+        costForWritingAndCorrecting:
+            costForWritingAndCorrecting ?? this.costForWritingAndCorrecting,
+        timeForFix: timeForFix ?? this.timeForFix,
+        programmerSalary: programmerSalary ?? this.programmerSalary,
+        costOfMachineTimeHours:
+            costOfMachineTimeHours ?? this.costOfMachineTimeHours,
+        depreciationPerMonth: depreciationPerMonth ?? this.depreciationPerMonth,
+        electricityConsumedPerMonth:
+            electricityConsumedPerMonth ?? this.electricityConsumedPerMonth,
+        maintenanceCostsPerMonth:
+            maintenanceCostsPerMonth ?? this.maintenanceCostsPerMonth,
+        workingDayPerMonth: workingDayPerMonth ?? this.workingDayPerMonth,
+        hourlyWorkingDayRate: hourlyWorkingDayRate ?? this.hourlyWorkingDayRate,
+        initialPrice: initialPrice ?? this.initialPrice,
+        annualDepreciationPercentage:
+            annualDepreciationPercentage ?? this.annualDepreciationPercentage,
+        requiredPower: requiredPower ?? this.requiredPower,
+        operatingTime: operatingTime ?? this.operatingTime,
+        electricityTariff: electricityTariff ?? this.electricityTariff,
+        numberOfComputers: numberOfComputers ?? this.numberOfComputers,
+        programmerSalary2: programmerSalary2 ?? this.programmerSalary2,
+
+        technicalEquipmentCosts:
+            technicalEquipmentCosts ?? this.technicalEquipmentCosts,
+        quantityOfComputers: quantityOfComputers ?? this.quantityOfComputers,
+        costOfOneComputer: costOfOneComputer ?? this.costOfOneComputer,
+        quantityOfPrinters: quantityOfPrinters ?? this.quantityOfPrinters,
+        costOfOnePrinter: costOfOnePrinter ?? this.costOfOnePrinter,
+
+          costOfImplementingProgram: costOfImplementingProgram ?? this.costOfImplementingProgram,
+      );
 
   @override
   String toString() {
-    return 'Note{id: $id,'
-        ' algorithmCreatingCost: $algorithmCreatingCost,'
-        ' salary: $salary,'
-        ' timeToCreateAlgorithm: $timeToCreateAlgorithm,'
-        ' insuranceInPercents: $insuranceInPercents, '
-        'insuranceCost: $insuranceCost, '
-        'programCreatingCost: $programCreatingCost, '
-        'costOfMachineTime: $costOfMachineTime, '
-        'hour: $hour, '
-        'day: $day, '
-        'costPerHour: $costPerHour, '
-        'costForWritingAndCorrecting: $costForWritingAndCorrecting, '
-        'timeForFix: $timeForFix, '
-        'programmerSalary: $programmerSalary}';
+    return '\nNote{'
+        '\nid: $id,'
+        '\n totalCostForCreationAndImplementing: $totalCostForCreationAndImplementing,'
+        '\n algorithmCreatingCost: $algorithmCreatingCost,'
+        '\n salary: $salary,'
+        '\n timeToCreateAlgorithm: $timeToCreateAlgorithm,'
+        '\n insuranceInPercents: $insuranceInPercents, '
+        '\n insuranceCost: $insuranceCost, '
+        '\n programCreatingCost: $programCreatingCost, '
+        '\n costOfMachineTime: $costOfMachineTime, '
+        '\n hour: $hour, '
+        '\n day: $day, '
+        '\n costPerHour: $costPerHour, '
+        '\n costForWritingAndCorrecting: $costForWritingAndCorrecting, '
+        '\n timeForFix: $timeForFix, '
+        '\n programmerSalary: $programmerSalary'
+        '\n costOfMachineTimeHours: $costOfMachineTimeHours'
+        '\n depreciationPerMonth: $depreciationPerMonth'
+        '\n electricityConsumedPerMonth: $electricityConsumedPerMonth'
+        '\n maintenanceCostsPerMonth: $maintenanceCostsPerMonth'
+        '\n workingDayPerMonth: $workingDayPerMonth'
+        '\n hourlyWorkingDayRate: $hourlyWorkingDayRate'
+        '\n initialPrice: $initialPrice'
+        '\n annualDepreciationPercentage: $annualDepreciationPercentage'
+        '\n requiredPower: $requiredPower'
+        '\n operatingTime: $operatingTime'
+        '\n electricityTariff: $electricityTariff'
+        '\n programmerSalary2: $programmerSalary2'
+        '\n numberOfComputers: $numberOfComputers'
+        '\n technicalEquipmentCosts: $technicalEquipmentCosts'
+        '\n quantityOfComputers: $quantityOfComputers'
+        '\n costOfOneComputer: $costOfOneComputer'
+        '\n quantityOfPrinters: $quantityOfPrinters'
+        '\n costOfOnePrinter: $costOfOnePrinter '
+        '\n costOfImplementingProgram: $costOfImplementingProgram }';
   }
 }

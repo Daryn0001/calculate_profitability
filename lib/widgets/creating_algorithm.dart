@@ -53,7 +53,7 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
     setState(() {
       TaskPage.note = note;
     });
-    print('new note created id: ${TaskPage.note}');
+    print('$runtimeType note updated: ${TaskPage.note}\n');
   }
 
   @override

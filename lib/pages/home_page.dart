@@ -25,21 +25,26 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     //deleteAllNotes();
+    printAll();
     refreshNote();
   }
 
   Future deleteAllNotes() async {
-    List<dynamic> list = await NotesDatabase.instance.readAllNotes();
-    print('NotesDatabase.readAllNotes() size: ${list.length}');
-    for (int i = 1; i < 5; i++) {
-      await NotesDatabase.instance.delete(i);
-    }
+
+    final db = NotesDatabase.instance;
+    db.deleteDatabase('notes.db');
+    //db.dropIfExists();
+  }
+
+  Future printAll () async {
+    final db = NotesDatabase.instance;
+    print(db.showAllTables());
   }
 
   Future refreshNote() async {
     setState(() => isLoading = true);
     todo = await NotesDatabase.instance.readAllNotes();
-    print("todo size: ${todo.length}");
+    //print("todo size: ${todo.length}");
     setState(() => isLoading = false);
   }
 
@@ -108,12 +113,12 @@ class _HomePageState extends State<HomePage> {
                       children: [
                         Expanded(
                           child: ListView.builder(
-                              itemCount: todo.length,
-                              //itemCount: 4,
+                              //itemCount: todo.length,
+                              itemCount: 4,
                               itemBuilder: (context, index) {
-                                Note n = todo[index];
+                                //Note n = todo[index];
                                 return ListItem(
-                                  projectName: n.id.toString(),
+                                  projectName: index.toString(),
                                 );
                               }),
                         ),
@@ -141,61 +146,3 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
-
-/* FadeAnimation(
-            delay: 0.8,
-            child: Container(
-              margin: EdgeInsets.only(top: he * 0.02, left: 10),
-              width: we, //* 0.9
-              height: he * 0.15, //
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Timecall(),
-                  SizedBox(
-                    height: he * 0.06,
-                  ),
-                  Text(
-                    "CATEGORIES",
-                    style: TextStyle(
-                        letterSpacing: 1,
-                        color: Colors.grey.withOpacity(0.8),
-                        fontSize: 13),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          */
- */
-
-/*FloatingActionButton(
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const TaskPage()))
-          .then((value) {
-            setState(() {
-
-            });
-          });
-        },
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ),*/
-
-/*ListView.builder(
-            itemCount: todo.length,
-
-            itemBuilder: (BuildContext ctx, int index){
-              return ListTile(
-                title: Text(todo[index],
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                    ),
-                ),
-                trailing: const Icon(Icons.delete, color: Colors.red),
-              );
-            }
-        )*/
