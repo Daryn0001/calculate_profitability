@@ -10,7 +10,7 @@ import 'button_change_them.dart';
 
 class HomePage extends StatefulWidget {
   VoidCallback opendrawer;
-
+  //static List<Note> todo = [];
   HomePage({Key? key, required this.opendrawer}) : super(key: key);
 
   @override
@@ -21,11 +21,15 @@ class _HomePageState extends State<HomePage> {
   var isLoading = false;
   List<Note> todo = [];
 
+
+
+
+
   @override
   void initState() {
     super.initState();
     //deleteAllNotes();
-    printAll();
+    //printAll();
     refreshNote();
   }
 
@@ -69,7 +73,7 @@ class _HomePageState extends State<HomePage> {
                     size: 30,
                   )),
               SizedBox(
-                width: we * 0.77,
+                width: we * 0.7,
               ),
               /*SizedBox(
                 width: we * 0.04,
@@ -112,15 +116,25 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: ListView.builder(
-                              //itemCount: todo.length,
-                              itemCount: 4,
-                              itemBuilder: (context, index) {
-                                //Note n = todo[index];
-                                return ListItem(
-                                  projectName: index.toString(),
-                                );
-                              }),
+                         child: FutureBuilder(
+                             initialData: const [],
+                           future: NotesDatabase.instance.readAllNotes(),
+                           builder: (context, AsyncSnapshot snapshot) {
+                             return ListView.builder(
+                                 itemCount: snapshot.data.length,
+                                 //itemCount: 4,
+                                 itemBuilder: (context, index) {
+                                   Note n = snapshot.data[index];
+
+                                   print('${n.id} : ${n.projectName}' );
+                                      return ListItem(
+                                       projectName: n.projectName,
+                                       id: n.id
+                                   );
+                                 });
+                           }
+
+                         ),
                         ),
                       ]),
                 ),
@@ -132,7 +146,7 @@ class _HomePageState extends State<HomePage> {
           onPressed: () async {
             await Navigator.of(context)
                 .push(PageTransition(
-                    type: PageTransitionType.fade, child: const TaskPage()))
+                    type: PageTransitionType.fade, child: TaskPage()))
                 .then((value) {
               refreshNote();
             });
@@ -146,3 +160,13 @@ class _HomePageState extends State<HomePage> {
     );
   }
 }
+/* child: ListView.builder(
+                              itemCount: HomePage.todo.length,
+                              //itemCount: 4,
+                              itemBuilder: (context, index) {
+                                Note n = HomePage.todo[index];
+                                return ListItem(
+                                  projectName: n.projectName,
+                                  id: n.id
+                                );
+                              }),*/

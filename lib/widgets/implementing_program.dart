@@ -2,10 +2,13 @@ import 'package:calculate_profitability/widgets/text_span.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../model/note.dart';
 import '../pages/taskpage.dart';
 
 class ImplementingProgramCost extends StatefulWidget {
-  const ImplementingProgramCost({Key? key}) : super(key: key);
+  const ImplementingProgramCost({Key? key, required this.note}) : super(key: key);
+
+  final Note note;
 
   @override
   _ImplementingProgramCostState createState() =>
@@ -21,9 +24,19 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
   int workingDayPerMonth2 = 0;
   int programmerSalary = 0;
   double insuranceCost = 0;
-  String result = '';
+
+  String result = '0';
+
+
+  // ? 4.4
+  int totalCostForCreationAndImplementing = 0;
+  double profitabilityStandard = 0;
+  double profit = 0;
+  double projectPrice = 0;
+  int programPrice = 0;
 
   final workingDayPerMonth2Controller = TextEditingController();
+  final profitabilityStandardController = TextEditingController();
 
   void _getAnswer(d) {
     setState(() {
@@ -31,17 +44,45 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
     });
   }
 
-  Future addNote({required costOfImplementingProgram}) async {
+
+  @override
+  initState() {
+    super.initState();
+
+    if(widget.note.id != null){
+      workingDayPerMonth2Controller.text = widget.note.workingDayPerMonth2.toString();
+      profitabilityStandardController.text = widget.note.profitabilityStandard.toString();
+    }
+  }
+
+  Future addNote({required costOfImplementingProgram,
+                  required profitabilityStandard}) async {
     TaskPage.note.costOfImplementingProgram = costOfImplementingProgram;
 
     setState(() {
       // ?  4.0 point COMPLETE
-      TaskPage.note.totalCostForCreationAndImplementing =
-          (TaskPage.note.algorithmCreatingCost + TaskPage.note.technicalEquipmentCosts +
-              TaskPage.note.programCreatingCost + costOfImplementingProgram).round();
+      totalCostForCreationAndImplementing =
+      (TaskPage.note.algorithmCreatingCost + TaskPage.note.technicalEquipmentCosts +
+          TaskPage.note.programCreatingCost + costOfImplementingProgram).round();
 
+      //? 4.4 point COMPLETE
+      profit = (profitabilityStandard / 100) * totalCostForCreationAndImplementing;
+
+      projectPrice = totalCostForCreationAndImplementing + profit;
+
+      programPrice = (projectPrice +  (projectPrice / 10)).round();
+      TaskPage.note.totalCostForCreationAndImplementing = totalCostForCreationAndImplementing;
+      TaskPage.note.profit = profit;
+      TaskPage.note.workingDayPerMonth2 = workingDayPerMonth2;
+      TaskPage.note.profitabilityStandard = profitabilityStandard;
+      TaskPage.note.projectPrice = projectPrice;
+      TaskPage.note.programPrice = programPrice;
     });
-    print('$runtimeType note updated: ${TaskPage.note}\n');
+
+
+
+
+   // print('$runtimeType note updated: ${TaskPage.note}\n');
   }
 
   @override
@@ -67,16 +108,25 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
             child: Wrap(children: [
               getInputForms(
                   name: 'D',
-                  type: '',
+                  type: 'күн',
                   controller: workingDayPerMonth2Controller),
+              getInputForms(
+                  name: 'У',
+                  index: 'p',
+                  type: '%',
+                  controller: profitabilityStandardController),
             ]),
           ),
           ElevatedButton(
             onPressed: () async {
               if (workingDayPerMonth2Controller.text.isNotEmpty &&
-                  isDigit.hasMatch(workingDayPerMonth2Controller.text)) {
+                  profitabilityStandardController.text.isNotEmpty &&
+              isDigit.hasMatch(workingDayPerMonth2Controller.text) &&
+                  isDigit.hasMatch(profitabilityStandardController.text)) {
                 workingDayPerMonth2 =
                     int.parse(workingDayPerMonth2Controller.text).toInt();
+                profitabilityStandard =
+                    double.parse(profitabilityStandardController.text).toDouble();
                 String str = (TaskPage.note.day / workingDayPerMonth2).toStringAsFixed(2);
                 double acc = double.parse(str).toDouble();
 
@@ -87,7 +137,8 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
                             + TaskPage.note.insuranceCost
                         )).round();
 
-                addNote(costOfImplementingProgram: costOfImplementingProgram);
+                addNote(costOfImplementingProgram: costOfImplementingProgram,
+                    profitabilityStandard: profitabilityStandard);
 
                 _getAnswer(costOfImplementingProgram);
               } else {
@@ -100,54 +151,47 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
             },
             child: const Text('Енгізу'),
           ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            child: RichText(
-              text: TextSpan(children: [
-                TextBuilder.getText(text: 'С'),
-                TextBuilder.getTextIndex(text: 'ткқш'),
-                TextBuilder.getText(text: ' = '),
-                TextBuilder.getText(text: result),
-                TextBuilder.getTextIndex(text: ' теңге'),
-              ]),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.only(top:8),
-            child: RichText(
-              text: TextSpan(children: [
-                TextBuilder.getText(text: 'Кешенді құруға және өндіруге кеткен шығын:'),
-                TextBuilder.getText(text: 'С'),
 
-                TextBuilder.getText(text: ' = '),
-                TextBuilder.getText(text: TaskPage.note.totalCostForCreationAndImplementing.toString()),
-                TextBuilder.getTextIndex(text: ' теңге'),
-              ]),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(8),
-            margin: const EdgeInsets.only(top:8),
-            child: RichText(
-              text: TextSpan(children: [
-                TextBuilder.getText(text: 'Ақпараттылық тиімділік:'),
-                TextBuilder.getText(text: 'Т'),
-                TextBuilder.getTextIndex(text: 'ж'),
-                TextBuilder.getText(text: ' = '),
-                TextBuilder.getText(text: result),
-                TextBuilder.getTextIndex(text: ' теңге'),
-              ]),
-            ),
-          ),
+
+          getResultText(title: 'Программаны ендірумен байланысты шығын',
+              text:'С', index:'кекш', value: result),
+
+          getResultText(title: 'Кешенді құруға және өндіруге кеткен шығын',
+            text:'С', index:'ж', value: totalCostForCreationAndImplementing,),
+
+          getResultText(title: 'Пайда',text:'П', value: profit),
+
+          getResultText(title: 'Жасалған жобаның бағасы',text:'Z', value: projectPrice),
+
+          getResultText(title: 'Ақпараттылық тиімділік', text:'Т', index:'ж', value:result,),
+
+          getResultText(title: 'Құрастырылған бағдарламаның бағасы', text:'Z', index:'жжб',  value: programPrice,),
+
         ]));
   }
 
-  /* Widget getComponentName({required name}){
-    return Text(name,
-      style: TextStyle(fontSize: componentFontSize),
+  Widget getResultText({required title, required text, index = '', required value, type= ' теңге'}){
+    return  Container(
+      padding: const EdgeInsets.all(8),
+      margin: const EdgeInsets.only(top:8),
+      child: Column(
+        children: [
+           Text('$title :',
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16)),
+          RichText(
+            text: TextSpan(children: [
+              TextBuilder.getText(text: text),
+              TextBuilder.getTextIndex(text: index),
+              TextBuilder.getText(text: ' = '),
+              TextBuilder.getText(text: value.toString()),
+              TextBuilder.getTextIndex(text: type),
+            ]),
+          ),
+        ],
+      ),
     );
-  }*/
+  }
 
   Widget getInputForms(
       {required name, index = '', required controller, required type}) {

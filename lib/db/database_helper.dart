@@ -13,7 +13,7 @@ class NotesDatabase {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('notes.db');
+    _database = await _initDB('notes5.db');
     return _database!;
   }
 
@@ -21,20 +21,27 @@ class NotesDatabase {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, filePath);
 
-    return await openDatabase(path, version: 1, onCreate: _createDB);
+    return await openDatabase(path, version: 1, onCreate: _createDB, onUpgrade: _onUpgrade);
   }
 
-
+  // UPGRADE DATABASE TABLES
+  Future _onUpgrade(Database db, int oldVersion, int newVersion) async{
+    if (oldVersion < newVersion) {
+      // you can execute drop table and create table
+      db.execute("ALTER TABLE $tableNotes ADD COLUMN ${NoteFields.projectName} TEXT;");
+    }
+  }
 
   Future _createDB(Database db, int version) async {
     const idType = 'INTEGER PRIMARY KEY AUTOINCREMENT';
     const integerType = 'INTEGER';
     const doubleType = 'DOUBLE';
-    //const stringType = 'TEXT NOT NULL';
+    const stringType = 'TEXT';
 
     await db.execute('''
       CREATE TABLE $tableNotes (
         ${NoteFields.id} $idType,
+        ${NoteFields.projectName} $stringType,
         ${NoteFields.totalCostForCreationAndImplementing} $integerType,
         ${NoteFields.algorithmCreatingCost} $doubleType,
         ${NoteFields.salary} $integerType,
@@ -70,14 +77,18 @@ class NotesDatabase {
         ${NoteFields.quantityOfPrinters} $integerType,
         ${NoteFields.costOfOnePrinter} $integerType,
         
-        ${NoteFields.costOfImplementingProgram} $integerType
-                
+        ${NoteFields.costOfImplementingProgram} $integerType,
+        ${NoteFields.workingDayPerMonth2} $integerType,
+        
+        ${NoteFields.profitabilityStandard} $doubleType,
+        ${NoteFields.profit} $doubleType,
+        ${NoteFields.projectPrice} $doubleType,
+        ${NoteFields.programPrice} $integerType                
       )
     ''');
   }
 
   Future<Note> create(Note note) async {
-
     final db = await instance.database;
 
     final id = await db.insert(tableNotes, note.toJson());
@@ -91,13 +102,13 @@ class NotesDatabase {
   Future<bool> databaseExists(String path) =>
       databaseFactory.databaseExists(path);
 
-  Future dropIfExists() async{
+  Future dropIfExists() async {
     final db = await instance.database;
-   int i = await db.rawDelete('DROP TABLE IF EXISTS $tableNotes');
+    int i = await db.rawDelete('DROP TABLE IF EXISTS $tableNotes');
     print('removed: $i notes');
   }
 
-  Future deleteAll() async{
+  Future deleteAll() async {
     final db = await instance.database;
     await db.rawDelete('DELETE FROM $tableNotes');
   }
@@ -123,18 +134,17 @@ class NotesDatabase {
     var db = await instance.database;
     const orderBy = '${NoteFields.id} ASC';
 
-    try{
+    try {
       final result = await db.query(tableNotes, orderBy: orderBy);
 
       return result.map((json) => Note.fromJson(json)).toList();
-    }on DatabaseException catch (_, e){
+    } on DatabaseException catch (_, e) {
       print('DatabaseException!!!: \n$e');
       db = await _initDB('notes.db');
       final result = await db.query(tableNotes, orderBy: orderBy);
 
       return result.map((json) => Note.fromJson(json)).toList();
     }
-
   }
 
   Future<int> update(Note note) async {
@@ -158,13 +168,12 @@ class NotesDatabase {
     );
   }
 
-
   Future<void> showAllTables() async {
     final db = await instance.database;
     final tables = db.rawQuery('SELECT * FROM sqlite_master ORDER BY name;');
-    List<Map<String, Object?>> list =  await tables;
-    for(Map<String, Object?> map in list){
-      map.forEach((k,v) => print('$k : $v \n'));
+    List<Map<String, Object?>> list = await tables;
+    for (Map<String, Object?> map in list) {
+      map.forEach((k, v) => print('$k : $v \n'));
     }
   }
 

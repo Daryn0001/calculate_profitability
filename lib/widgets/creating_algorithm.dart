@@ -1,6 +1,5 @@
 import 'dart:ui';
 
-import 'package:calculate_profitability/db/database_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -8,11 +7,10 @@ import '../model/note.dart';
 import '../pages/taskpage.dart';
 
 class CostOfCreatingAnAlgorithm extends StatefulWidget {
-  static Note? note ;
-  static String result = '';
-  static int? id;
+  final Note note;
 
-  const CostOfCreatingAnAlgorithm({Key? key, }) : super(key: key);
+  const CostOfCreatingAnAlgorithm({Key? key, required this.note})
+      : super(key: key);
 
   @override
   _CostOfCreatingAnAlgorithmState createState() =>
@@ -27,20 +25,34 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
   double insuranceCost = 0;
   String salary = '', timeSpend = '', spendingOnInsurance = '', result = '';
 
+  @override
+  initState() {
+    super.initState();
+    if (widget.note.id != null) {
+      if(widget.note.salary != 0) {
+        salaryController.text = widget.note.salary.toString();
+      }
+      if(widget.note.insuranceInPercents != 0) {
+        insuranceController.text = widget.note.insuranceInPercents.toString();
+      }
+      if(widget.note.timeToCreateAlgorithm != 0) {
+        timeController.text = widget.note.timeToCreateAlgorithm.toString();
+      }
+    }
+  }
+
   void _getAnswer(double d) {
     setState(() {
-      CostOfCreatingAnAlgorithm.result = result = d.toString();
+      result = d.toString();
     });
   }
 
-
-
-  Future addNote({required double insuranceCost,
-    required double algorithmCreatingCost,
-    required int salary,
-    required double timeToCreateAlgorithm,
-    required double insuranceInPercents})
-  async {
+  Future addNote(
+      {required double insuranceCost,
+      required double algorithmCreatingCost,
+      required int salary,
+      required double timeToCreateAlgorithm,
+      required double insuranceInPercents}) async {
     final note = Note(
       insuranceCost: insuranceCost,
       algorithmCreatingCost: algorithmCreatingCost,
@@ -53,7 +65,7 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
     setState(() {
       TaskPage.note = note;
     });
-    print('$runtimeType note updated: ${TaskPage.note}\n');
+    //print('$runtimeType note updated: ${TaskPage.note}\n');
   }
 
   @override
@@ -139,44 +151,45 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
                           controller: insuranceController)))
             ]),
           ),
-          Container(
-            child: ElevatedButton(
-              onPressed: () async{
-                RegExp isDigit = RegExp(r'[0-9]\.?[0-9]?');
-                if (salaryController.text.isNotEmpty &&
-                    insuranceController.text.isNotEmpty &&
-                    timeController.text.isNotEmpty &&
-                    isDigit.hasMatch(salaryController.text) &&
-                    isDigit.hasMatch(insuranceController.text) &&
-                    isDigit.hasMatch(timeController.text)) {
-                  int salary = int.parse(salaryController.text);
-                  double timeToCreateAlgorithm = double.parse(timeController.text);
-                  double insuranceInPercents = double.parse(insuranceController.text);
-                  double insuranceCost = ((salary * insuranceInPercents) / 100);
-                  double algorithmCreatingCost = salary * timeToCreateAlgorithm + insuranceCost;
+          ElevatedButton(
+            onPressed: () async {
+              RegExp isDigit = RegExp(r'[0-9]\.?[0-9]?');
+              if (salaryController.text.isNotEmpty &&
+                  insuranceController.text.isNotEmpty &&
+                  timeController.text.isNotEmpty &&
+                  isDigit.hasMatch(salaryController.text) &&
+                  isDigit.hasMatch(insuranceController.text) &&
+                  isDigit.hasMatch(timeController.text)) {
+                int salary = int.parse(salaryController.text);
+                double timeToCreateAlgorithm =
+                    double.parse(timeController.text);
+                double insuranceInPercents =
+                    double.parse(insuranceController.text);
+                double insuranceCost = ((salary * insuranceInPercents) / 100);
+                double algorithmCreatingCost =
+                    salary * timeToCreateAlgorithm + insuranceCost;
 
-                  await addNote(
-                    insuranceCost: insuranceCost,
-                    algorithmCreatingCost: algorithmCreatingCost,
-                    salary: salary,
-                    timeToCreateAlgorithm: timeToCreateAlgorithm,
-                    insuranceInPercents: insuranceInPercents,
-                  );
-                    print('CostOfCreatingAnAlgorithm.id: ${ CostOfCreatingAnAlgorithm.id}');
-                  _getAnswer(algorithmCreatingCost);
-                  salaryController.text = '${salaryController.text} тг';
-                  insuranceController.text = '${insuranceController.text}%';
-                  timeController.text = '${timeController.text} ай';
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content:
-                            Text('Alert', style: TextStyle(color: Colors.red))),
-                  );
-                }
-              },
-              child: const Text('Енгізу'),
-            ),
+                await addNote(
+                  insuranceCost: insuranceCost,
+                  algorithmCreatingCost: algorithmCreatingCost,
+                  salary: salary,
+                  timeToCreateAlgorithm: timeToCreateAlgorithm,
+                  insuranceInPercents: insuranceInPercents,
+                );
+
+                _getAnswer(algorithmCreatingCost);
+                salaryController.text = '${salaryController.text} тг';
+                insuranceController.text = '${insuranceController.text}%';
+                timeController.text = '${timeController.text} ай';
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content:
+                          Text('Alert', style: TextStyle(color: Colors.red))),
+                );
+              }
+            },
+            child: const Text('Енгізу'),
           ),
           Container(
             padding: const EdgeInsets.all(8),
@@ -202,20 +215,17 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
   }
 
   Widget getInputForms({required name, index = '', required controller}) {
-    return Container(
-      child: ListTile(
-        leading: RichText(
-          text:
-              TextSpan(style: const TextStyle(color: Colors.black), children: [
-            TextSpan(text: name, style: const TextStyle(fontSize: 18)),
-            TextSpan(
-                text: index,
-                style: const TextStyle(
-                    fontSize: 12, fontFeatures: [FontFeature.subscripts()])),
-          ]),
-        ),
-        title: getInputField(controller: controller),
+    return ListTile(
+      leading: RichText(
+        text: TextSpan(style: const TextStyle(color: Colors.black), children: [
+          TextSpan(text: name, style: const TextStyle(fontSize: 18)),
+          TextSpan(
+              text: index,
+              style: const TextStyle(
+                  fontSize: 12, fontFeatures: [FontFeature.subscripts()])),
+        ]),
       ),
+      title: getInputField(controller: controller),
     );
   }
 

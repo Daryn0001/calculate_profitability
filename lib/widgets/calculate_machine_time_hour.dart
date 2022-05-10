@@ -3,10 +3,13 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../model/note.dart';
 import '../pages/taskpage.dart';
 
 class CostOfMachineTimeHour extends StatefulWidget {
-  const CostOfMachineTimeHour({Key? key}) : super(key: key);
+  const CostOfMachineTimeHour({Key? key, required this.note}) : super(key: key);
+
+  final Note note;
 
   @override
   _CostOfMachineTimeHourState createState() => _CostOfMachineTimeHourState();
@@ -16,6 +19,7 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
   final double dividerWidth = 70;
   final double textSize = 18;
   final double indexSize = 11;
+  final isDigit = RegExp(r'[0-9]\.?[0-9]?');
 
   int costOfMachineTimeHours = 0;
   double depreciationPerMonth = 0;
@@ -51,9 +55,125 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
 
   String result = '';
 
+  _changeText(){
+    setState(() {
+      if (initialPriceController.text.isNotEmpty &&
+          annualDepreciationPercentageController.text.isNotEmpty &&
+          requiredPowerController.text.isNotEmpty &&
+          operatingTimeController.text.isNotEmpty &&
+          electricityTariffController.text.isNotEmpty &&
+          programmerSalaryController.text.isNotEmpty &&
+          numberOfComputersController.text.isNotEmpty &&
+          workingDayPerMonthController.text.isNotEmpty &&
+          hourlyWorkingDayRateController.text.isNotEmpty &&
+          isDigit.hasMatch(initialPriceController.text) &&
+          isDigit.hasMatch(
+              annualDepreciationPercentageController.text) &&
+          isDigit.hasMatch(requiredPowerController.text) &&
+          isDigit.hasMatch(operatingTimeController.text) &&
+          isDigit.hasMatch(programmerSalaryController.text) &&
+          isDigit.hasMatch(numberOfComputersController.text) &&
+          isDigit.hasMatch(workingDayPerMonthController.text) &&
+          isDigit.hasMatch(hourlyWorkingDayRateController.text) &&
+          isDigit.hasMatch(electricityTariffController.text)) {
+        initialPrice = int.parse(initialPriceController.text).toInt();
+        annualDepreciationPercentage =
+            double.parse(annualDepreciationPercentageController.text)
+                .toDouble();
+        requiredPower =
+            double.parse(requiredPowerController.text).toDouble();
+        operatingTime =
+            double.parse(operatingTimeController.text).toDouble();
+        electricityTariff =
+            double.parse(electricityTariffController.text).toDouble();
+        programmerSalary =
+            int.parse(programmerSalaryController.text).toInt();
+        numberOfComputers =
+            int.parse(numberOfComputersController.text).toInt();
+        workingDayPerMonth =
+            int.parse(workingDayPerMonthController.text).toInt();
+        hourlyWorkingDayRate =
+            int.parse(hourlyWorkingDayRateController.text).toInt();
+
+        depreciationPerMonth =
+            (initialPrice * (annualDepreciationPercentage / 100)) /
+                12;
+        electricityConsumedPerMonth =
+            requiredPower * operatingTime * electricityTariff;
+        maintenanceCostsPerMonth =
+            programmerSalary / numberOfComputers;
+        costOfMachineTimeHours = ((depreciationPerMonth +
+            electricityConsumedPerMonth +
+            maintenanceCostsPerMonth) /
+            (workingDayPerMonth * hourlyWorkingDayRate))
+            .round();
+
+        addNote(
+          initialPrice: initialPrice,
+          annualDepreciationPercentage: annualDepreciationPercentage,
+          requiredPower: requiredPower,
+          operatingTime: operatingTime,
+          electricityTariff: electricityTariff,
+          programmerSalary: programmerSalary,
+          numberOfComputers: numberOfComputers,
+          workingDayPerMonth: workingDayPerMonth,
+          hourlyWorkingDayRate: hourlyWorkingDayRate,
+          depreciationPerMonth: depreciationPerMonth,
+          electricityConsumedPerMonth: electricityConsumedPerMonth,
+          maintenanceCostsPerMonth: maintenanceCostsPerMonth,
+          costOfMachineTimeHours: costOfMachineTimeHours,
+        );
+
+
+      }
+    });
+  }
+
+
   @override
   void initState() {
     super.initState();
+
+    if (widget.note.id != null) {
+      costOfMachineTimeHoursController.text =
+          widget.note.costOfMachineTimeHours  != 0 ? widget.note.costOfMachineTimeHours.toString()  : '';
+      depreciationPerMonthController.text =
+          widget.note.depreciationPerMonth != 0 ? widget.note.depreciationPerMonth.toString() : '';
+      electricityConsumedPerMonthController.text =
+          widget.note.electricityConsumedPerMonth != 0 ? widget.note.electricityConsumedPerMonth.toString() : '';
+      maintenanceCostsPerMonthController.text =
+          widget.note.maintenanceCostsPerMonth != 0 ? widget.note.maintenanceCostsPerMonth.toString() : '';
+      workingDayPerMonthController.text =
+          widget.note.workingDayPerMonth != 0 ? widget.note.workingDayPerMonth.toString() : '';
+      hourlyWorkingDayRateController.text =
+          widget.note.hourlyWorkingDayRate != 0 ? widget.note.hourlyWorkingDayRate.toString() : '';
+      initialPriceController.text = widget.note.initialPrice != 0 ? widget.note.initialPrice.toString() : '';
+      annualDepreciationPercentageController.text =
+          widget.note.annualDepreciationPercentage != 0 ? widget.note.annualDepreciationPercentage.toString() : '';
+      requiredPowerController.text = widget.note.requiredPower != 0 ? widget.note.requiredPower.toString() : '';
+      operatingTimeController.text = widget.note.operatingTime != 0 ? widget.note.operatingTime.toString() : '';
+      electricityTariffController.text =
+          widget.note.electricityTariff != 0 ? widget.note.electricityTariff.toString() : '';
+      programmerSalaryController.text = widget.note.programmerSalary != 0 ? widget.note.programmerSalary.toString() : '';
+      numberOfComputersController.text =
+          widget.note.numberOfComputers != 0 ? widget.note.numberOfComputers.toString() : '';
+    }
+
+
+    costOfMachineTimeHoursController.addListener(() => { _changeText()});
+    depreciationPerMonthController.addListener(() => { _changeText()});
+    electricityConsumedPerMonthController.addListener(() => { _changeText()});
+    maintenanceCostsPerMonthController.addListener(() => { _changeText()});
+    workingDayPerMonthController.addListener(() => { _changeText()});
+    hourlyWorkingDayRateController.addListener(() => { _changeText()});
+    initialPriceController.addListener(() => { _changeText()});
+    annualDepreciationPercentageController.addListener(() => { _changeText()});
+    requiredPowerController.addListener(() => { _changeText()});
+    operatingTimeController.addListener(() => { _changeText()});
+    electricityTariffController.addListener(() => { _changeText()});
+    programmerSalaryController.addListener(() => { _changeText()});
+    numberOfComputersController.addListener(() => { _changeText()});
+
   }
 
   void _getAnswer(d) {
@@ -82,7 +202,7 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
     TaskPage.note.requiredPower = requiredPower;
     TaskPage.note.operatingTime = operatingTime;
     TaskPage.note.electricityTariff = electricityTariff;
-    TaskPage.note.programmerSalary = programmerSalary;
+    TaskPage.note.programmerSalary2 = programmerSalary;
     TaskPage.note.numberOfComputers = numberOfComputers;
     TaskPage.note.workingDayPerMonth = workingDayPerMonth;
     TaskPage.note.hourlyWorkingDayRate = hourlyWorkingDayRate;
@@ -93,7 +213,7 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
 
     //await NotesDatabase.instance.update(TaskPage.note);
 
-    print('$runtimeType note updated: ${TaskPage.note}\n');
+    //print('$runtimeType note updated: ${TaskPage.note}\n');
   }
 
   @override
@@ -340,7 +460,7 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
           Container(
             child: ElevatedButton(
               onPressed: () async {
-                RegExp isDigit = RegExp(r'[0-9]\.?[0-9]?');
+
                 if (initialPriceController.text.isNotEmpty &&
                     annualDepreciationPercentageController.text.isNotEmpty &&
                     requiredPowerController.text.isNotEmpty &&
@@ -379,8 +499,6 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                   hourlyWorkingDayRate =
                       int.parse(hourlyWorkingDayRateController.text).toInt();
 
-
-
                   depreciationPerMonth =
                       (initialPrice * (annualDepreciationPercentage / 100)) /
                           12;
@@ -409,7 +527,6 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                     maintenanceCostsPerMonth: maintenanceCostsPerMonth,
                     costOfMachineTimeHours: costOfMachineTimeHours,
                   );
-
 
                   _getAnswer(costOfMachineTimeHours);
                 } else {

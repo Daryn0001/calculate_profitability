@@ -2,10 +2,13 @@ import 'package:calculate_profitability/widgets/text_span.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../model/note.dart';
 import '../pages/taskpage.dart';
 
 class TechnicalEquipmentCost extends StatefulWidget {
-  const TechnicalEquipmentCost({Key? key}) : super(key: key);
+  const TechnicalEquipmentCost({Key? key, required this.note}) : super(key: key);
+
+  final Note note;
 
   @override
   _TechnicalEquipmentCostState createState() => _TechnicalEquipmentCostState();
@@ -34,6 +37,33 @@ class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
 
   String result = "";
 
+
+  @override
+  initState() {
+    super.initState();
+
+    if(widget.note.id != 0){
+      if(widget.note.quantityOfComputers != 0){
+        quantityOfComputersController.text =
+            widget.note.quantityOfComputers.toString();
+      }
+      if(widget.note.costOfOneComputer != 0){
+        costOfOneComputerController.text =
+            widget.note.costOfOneComputer.toString();
+      }
+      if(widget.note.quantityOfPrinters != 0){
+        quantityOfPrintersController.text =
+            widget.note.quantityOfPrinters.toString();
+      }
+      if(widget.note.costOfOnePrinter != 0){
+        costOfOnePrinterController.text =
+            widget.note.costOfOnePrinter.toString();
+      }
+
+
+    }
+  }
+
   void _getAnswer(d) {
     setState(() {
       result = d.toString();
@@ -54,7 +84,7 @@ class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
     TaskPage.note.quantityOfPrinters = quantityOfPrinters;
     TaskPage.note.costOfOnePrinter = costOfOnePrinter;
 
-    print('$runtimeType note updated: ${TaskPage.note}\n  ');
+    //print('$runtimeType note updated: ${TaskPage.note}\n  ');
   }
 
   @override

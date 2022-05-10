@@ -3,6 +3,7 @@ const String tableNotes = 'notes';
 class NoteFields {
   static final List<String> values = [
     id,
+    projectName,
     totalCostForCreationAndImplementing,
     algorithmCreatingCost,
     salary,
@@ -18,7 +19,6 @@ class NoteFields {
     timeForFix,
     numberOfComputers,
     programmerSalary,
-
     technicalEquipmentCosts,
     quantityOfComputers,
     costOfOneComputer,
@@ -37,12 +37,19 @@ class NoteFields {
     electricityTariff,
     programmerSalary2,
     costOfImplementingProgram,
+    workingDayPerMonth2,
+    profitabilityStandard,
+    profit,
+    projectPrice,
+    programPrice,
   ];
 
   static const String id = '_id';
+  static const String projectName = 'projectName';
 
   // ? 4.0
-  static const String totalCostForCreationAndImplementing = 'totalCostForCreationAndImplementing';
+  static const String totalCostForCreationAndImplementing =
+      'totalCostForCreationAndImplementing';
 
   //? 4.1
   static const String algorithmCreatingCost = 'algorithmCreatingCost';
@@ -86,10 +93,20 @@ class NoteFields {
 
   // ? 4.3
   static const costOfImplementingProgram = 'costOfImplementingProgram';
+  static const workingDayPerMonth2 = 'workingDayPerMonth2';
+
+// ? 4.4
+
+  static const profitabilityStandard = 'profitabilityStandard';
+  static const profit = 'profit';
+  static const projectPrice = 'projectPrice';
+  static const programPrice = 'programPrice';
 }
 
 class Note {
-  final int? id;
+   int? id;
+
+  String projectName;
   // ? 4.0
   int totalCostForCreationAndImplementing;
 
@@ -134,18 +151,20 @@ class Note {
   int programmerSalary2;
   int numberOfComputers;
 
-
-
   // ? 4.3
   int costOfImplementingProgram;
+  int workingDayPerMonth2;
 
-
+  // ? 4.4
+  double profitabilityStandard;
+  double profit;
+  double projectPrice;
+  int programPrice;
 
   Note({
     this.id,
-
+    this.projectName = 'не указано',
     this.totalCostForCreationAndImplementing = 0,
-
     this.algorithmCreatingCost = 0,
     this.salary = 0,
     this.timeToCreateAlgorithm = 0,
@@ -173,19 +192,24 @@ class Note {
     this.electricityTariff = 0,
     this.numberOfComputers = 0,
     this.programmerSalary2 = 0,
-
     this.technicalEquipmentCosts = 0,
     this.quantityOfComputers = 0,
     this.costOfOneComputer = 0,
     this.quantityOfPrinters = 0,
     this.costOfOnePrinter = 0,
-
     this.costOfImplementingProgram = 0,
+    this.workingDayPerMonth2 = 0,
+    this.profitabilityStandard = 0,
+    this.profit = 0,
+    this.projectPrice = 0,
+    this.programPrice = 0,
   });
 
   Map<String, dynamic> toJson() => {
         NoteFields.id: id,
-        NoteFields.totalCostForCreationAndImplementing: totalCostForCreationAndImplementing,
+        NoteFields.projectName: projectName,
+        NoteFields.totalCostForCreationAndImplementing:
+            totalCostForCreationAndImplementing,
         NoteFields.algorithmCreatingCost: algorithmCreatingCost,
         NoteFields.salary: salary,
         NoteFields.timeToCreateAlgorithm: timeToCreateAlgorithm,
@@ -212,7 +236,6 @@ class Note {
         NoteFields.electricityTariff: electricityTariff,
         NoteFields.numberOfComputers: numberOfComputers,
         NoteFields.programmerSalary2: programmerSalary2,
-
         NoteFields.technicalEquipmentCosts: technicalEquipmentCosts,
         NoteFields.quantityOfComputers: quantityOfComputers,
         NoteFields.costOfOneComputer: costOfOneComputer,
@@ -220,13 +243,18 @@ class Note {
         NoteFields.costOfOnePrinter: costOfOnePrinter,
 
         NoteFields.costOfImplementingProgram: costOfImplementingProgram,
-
-
+        NoteFields.workingDayPerMonth2: workingDayPerMonth2,
+        NoteFields.profitabilityStandard: profitabilityStandard,
+        NoteFields.profit: profit,
+        NoteFields.projectPrice: projectPrice,
+        NoteFields.programPrice: programPrice,
       };
 
   static Note fromJson(Map<String, dynamic> json) => Note(
         id: json[NoteFields.id] as int?,
-        totalCostForCreationAndImplementing: json[NoteFields.totalCostForCreationAndImplementing] as int,
+        projectName: json[NoteFields.projectName] as String,
+        totalCostForCreationAndImplementing:
+            json[NoteFields.totalCostForCreationAndImplementing] as int,
         algorithmCreatingCost: json[NoteFields.algorithmCreatingCost] as double,
         salary: json[NoteFields.salary] as int,
         timeToCreateAlgorithm: json[NoteFields.timeToCreateAlgorithm] as double,
@@ -257,19 +285,24 @@ class Note {
         electricityTariff: json[NoteFields.electricityTariff] as double,
         numberOfComputers: json[NoteFields.numberOfComputers] as int,
         programmerSalary2: json[NoteFields.programmerSalary2] as int,
-
         technicalEquipmentCosts:
             json[NoteFields.technicalEquipmentCosts] as int,
         quantityOfComputers: json[NoteFields.quantityOfComputers] as int,
         costOfOneComputer: json[NoteFields.costOfOneComputer] as int,
         quantityOfPrinters: json[NoteFields.quantityOfPrinters] as int,
         costOfOnePrinter: json[NoteFields.costOfOnePrinter] as int,
-
-      costOfImplementingProgram: json[NoteFields.costOfImplementingProgram] as int,
+        costOfImplementingProgram:
+            json[NoteFields.costOfImplementingProgram] as int,
+        workingDayPerMonth2: json[NoteFields.workingDayPerMonth2] as int,
+        profitabilityStandard: json[NoteFields.profitabilityStandard] as double,
+        profit: json[NoteFields.profit] as double,
+        projectPrice: json[NoteFields.projectPrice] as double,
+        programPrice: json[NoteFields.programPrice] as int,
       );
 
   Note copy({
     int? id,
+    String? projectName,
     int? totalCostForCreationAndImplementing,
     double? algorithmCreatingCost,
     int? salary,
@@ -297,18 +330,23 @@ class Note {
     double? operatingTime,
     double? electricityTariff,
     int? programmerSalary2,
-
     int? technicalEquipmentCosts,
     int? quantityOfComputers,
     int? costOfOneComputer,
     int? quantityOfPrinters,
     int? costOfOnePrinter,
-
-    int? costOfImplementingProgram
+    int? costOfImplementingProgram,
+    double? profitabilityStandard,
+    double? profit,
+    double? projectPrice,
+    int? programPrice,
   }) =>
       Note(
         id: id ?? this.id,
-        totalCostForCreationAndImplementing: totalCostForCreationAndImplementing ?? this.totalCostForCreationAndImplementing,
+        projectName: projectName ?? this.projectName,
+        totalCostForCreationAndImplementing:
+            totalCostForCreationAndImplementing ??
+                this.totalCostForCreationAndImplementing,
         algorithmCreatingCost:
             algorithmCreatingCost ?? this.algorithmCreatingCost,
         salary: salary ?? this.salary,
@@ -342,53 +380,63 @@ class Note {
         electricityTariff: electricityTariff ?? this.electricityTariff,
         numberOfComputers: numberOfComputers ?? this.numberOfComputers,
         programmerSalary2: programmerSalary2 ?? this.programmerSalary2,
-
         technicalEquipmentCosts:
             technicalEquipmentCosts ?? this.technicalEquipmentCosts,
         quantityOfComputers: quantityOfComputers ?? this.quantityOfComputers,
         costOfOneComputer: costOfOneComputer ?? this.costOfOneComputer,
         quantityOfPrinters: quantityOfPrinters ?? this.quantityOfPrinters,
         costOfOnePrinter: costOfOnePrinter ?? this.costOfOnePrinter,
-
-          costOfImplementingProgram: costOfImplementingProgram ?? this.costOfImplementingProgram,
+        costOfImplementingProgram:
+            costOfImplementingProgram ?? this.costOfImplementingProgram,
+        profitabilityStandard:
+            profitabilityStandard ?? this.profitabilityStandard,
+        profit: profit ?? this.profit,
+        projectPrice: projectPrice ?? this.projectPrice,
+        programPrice: programPrice ?? this.programPrice,
       );
 
   @override
   String toString() {
     return '\nNote{'
         '\nid: $id,'
+        '\n projectName: $projectName,'
         '\n totalCostForCreationAndImplementing: $totalCostForCreationAndImplementing,'
-        '\n algorithmCreatingCost: $algorithmCreatingCost,'
-        '\n salary: $salary,'
+        ' algorithmCreatingCost: $algorithmCreatingCost,'
+        ' salary: $salary,'
         '\n timeToCreateAlgorithm: $timeToCreateAlgorithm,'
-        '\n insuranceInPercents: $insuranceInPercents, '
-        '\n insuranceCost: $insuranceCost, '
+        ' insuranceInPercents: $insuranceInPercents, '
+        ' insuranceCost: $insuranceCost, '
         '\n programCreatingCost: $programCreatingCost, '
-        '\n costOfMachineTime: $costOfMachineTime, '
-        '\n hour: $hour, '
+        ' costOfMachineTime: $costOfMachineTime, '
+        ' hour: $hour, '
         '\n day: $day, '
-        '\n costPerHour: $costPerHour, '
-        '\n costForWritingAndCorrecting: $costForWritingAndCorrecting, '
+        ' costPerHour: $costPerHour, '
+        ' costForWritingAndCorrecting: $costForWritingAndCorrecting, '
         '\n timeForFix: $timeForFix, '
-        '\n programmerSalary: $programmerSalary'
-        '\n costOfMachineTimeHours: $costOfMachineTimeHours'
+        ' programmerSalary: $programmerSalary'
+        ' costOfMachineTimeHours: $costOfMachineTimeHours'
         '\n depreciationPerMonth: $depreciationPerMonth'
-        '\n electricityConsumedPerMonth: $electricityConsumedPerMonth'
-        '\n maintenanceCostsPerMonth: $maintenanceCostsPerMonth'
+        ' electricityConsumedPerMonth: $electricityConsumedPerMonth'
+        ' maintenanceCostsPerMonth: $maintenanceCostsPerMonth'
         '\n workingDayPerMonth: $workingDayPerMonth'
-        '\n hourlyWorkingDayRate: $hourlyWorkingDayRate'
-        '\n initialPrice: $initialPrice'
+        ' hourlyWorkingDayRate: $hourlyWorkingDayRate'
+        ' initialPrice: $initialPrice'
         '\n annualDepreciationPercentage: $annualDepreciationPercentage'
-        '\n requiredPower: $requiredPower'
-        '\n operatingTime: $operatingTime'
+        ' requiredPower: $requiredPower'
+        ' operatingTime: $operatingTime'
         '\n electricityTariff: $electricityTariff'
-        '\n programmerSalary2: $programmerSalary2'
-        '\n numberOfComputers: $numberOfComputers'
+        ' programmerSalary2: $programmerSalary2'
+        ' numberOfComputers: $numberOfComputers'
         '\n technicalEquipmentCosts: $technicalEquipmentCosts'
-        '\n quantityOfComputers: $quantityOfComputers'
-        '\n costOfOneComputer: $costOfOneComputer'
+        ' quantityOfComputers: $quantityOfComputers'
+        ' costOfOneComputer: $costOfOneComputer'
         '\n quantityOfPrinters: $quantityOfPrinters'
-        '\n costOfOnePrinter: $costOfOnePrinter '
-        '\n costOfImplementingProgram: $costOfImplementingProgram }';
+        ' costOfOnePrinter: $costOfOnePrinter '
+        ' costOfImplementingProgram: $costOfImplementingProgram '
+        '\n workingDayPerMonth2: $workingDayPerMonth2 '
+        ' profitabilityStandard: $profitabilityStandard'
+        ' profit: $profit'
+        '\n projectPrice: $projectPrice'
+        ' programPrice: $programPrice}';
   }
 }

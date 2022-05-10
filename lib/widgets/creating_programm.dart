@@ -2,12 +2,14 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../db/database_helper.dart';
+import '../model/note.dart';
 import '../pages/taskpage.dart';
 
 
 class CostOfCreatingProgram extends StatefulWidget {
-  const CostOfCreatingProgram({Key? key}) : super(key: key);
+  const CostOfCreatingProgram({Key? key, required this.note}) : super(key: key);
+
+  final Note note;
 
   @override
   _CostOfCreatingProgramState createState() => _CostOfCreatingProgramState();
@@ -23,6 +25,29 @@ class _CostOfCreatingProgramState extends State<CostOfCreatingProgram> {
   final costPerHourController = TextEditingController();
   String result = '';
 
+
+  @override
+  initState() {
+    super.initState();
+
+    if(widget.note.id != null){
+      if(widget.note.programmerSalary != 0){
+        salaryController.text = widget.note.programmerSalary.toString();
+      }
+      if(widget.note.hour != 0){
+        hourController.text = widget.note.hour.toString();
+      }
+      if(widget.note.day != 0){
+        dayController.text = widget.note.day.toString();
+      }
+      if(widget.note.costPerHour != 0){
+        costPerHourController.text = widget.note.costPerHour.toString();
+      }
+      if(widget.note.timeForFix != 0){
+        fixController.text = widget.note.timeForFix.toString();
+      }
+    }
+  }
 
   void _getAnswer(double d) {
     setState(() {
@@ -55,7 +80,7 @@ class _CostOfCreatingProgramState extends State<CostOfCreatingProgram> {
 
     //await NotesDatabase.instance.update(TaskPage.note);
 
-    print('$runtimeType note updated: ${TaskPage.note}\n');
+   // print('$runtimeType note updated: ${TaskPage.note}\n');
   }
 
 
