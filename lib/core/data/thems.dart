@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../res/style.dart';
+
 class ThemProvider extends ChangeNotifier {
   ThemeMode themeMode = ThemeMode.system;
   bool get isDarkMode => themeMode == ThemeMode.light;
@@ -9,6 +11,8 @@ class ThemProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+
+
 
 class Mytheme {
   static final darkthem = ThemeData(
@@ -26,14 +30,15 @@ class Mytheme {
     textTheme: const TextTheme(
       displayMedium: TextStyle(color: Colors.black,),
     ),// E26A2C F4F6FD
-    scaffoldBackgroundColor: const Color(0xffF4F6FD),
+    scaffoldBackgroundColor: AppStyle.taskPageBackgroundColor,
     primaryColor: Colors.black,
     floatingActionButtonTheme: const FloatingActionButtonThemeData(
         backgroundColor: Color(0xFF002FFF)),
     appBarTheme: //const AppBarTheme(backgroundColor: Color(0xff3450A1)), ff0A155A
     // ! FF548CFF
-    const AppBarTheme(backgroundColor: Color(0xFF548CFF)),
+    const AppBarTheme(backgroundColor: Color(0xFF51C4D3)),
   ); // ? DA1212  FF5151  3D0000   FF8080
 // * FFD59E   525E75   D06224
 // ! btn 002FFF 548CFF F1DDBF
+// 51C4D3
 }

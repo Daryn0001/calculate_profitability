@@ -69,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   onPressed: widget.opendrawer,
                   icon: const Icon(
                     Icons.drag_handle_outlined,
-                    color: Colors.grey,
+                    color: Colors.white70,
                     size: 30,
                   )),
               SizedBox(
@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                   child: Container(
                     margin: EdgeInsets.only(top: he * 0.02, left: 10),
                     width: we, //* 0.9
-                    height: he * 0.15, //
+                    //height: he * 0.15, //
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -100,12 +100,13 @@ class _HomePageState extends State<HomePage> {
                         SizedBox(
                           height: he * 0.06,
                         ),
+                        //getDescription(),
                         Text(
-                          "CATEGORIES",
+                          "ТІЗІМДЕР",
                           style: TextStyle(
                               letterSpacing: 1,
                               color: Colors.red.withOpacity(0.8),
-                              fontSize: 13),
+                              fontSize: 14),
                         ),
                       ],
                     ),
@@ -159,14 +160,29 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
+  String text = 'Кешенді құруға және өндіруге кеткен шығындар, '
+      'техникалық құралдар кешеніне кеткен шығындар, программа жасауға және түзетуге кеткен шығындар, '
+      'ақпарат өнімділігі есептеу';
+
+  Widget getDescription() {
+    return Container(
+      decoration: BoxDecoration(
+          color: Colors.grey, // 126E82  0xFF04123F  132C33
+          border: Border.all(
+            color: Colors.black38,
+          )),
+      padding: const EdgeInsets.all(8),
+      child: Text(
+        text,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+            fontSize: 16,
+            letterSpacing: 2,
+            color: Colors.white,
+            fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
 }
-/* child: ListView.builder(
-                              itemCount: HomePage.todo.length,
-                              //itemCount: 4,
-                              itemBuilder: (context, index) {
-                                Note n = HomePage.todo[index];
-                                return ListItem(
-                                  projectName: n.projectName,
-                                  id: n.id
-                                );
-                              }),*/

@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../Avatar_progerss.dart';
-//import '../chart.dart';
-import 'drawer_items.dart';
 
 class DrawerWidget extends StatefulWidget {
   VoidCallback closdDrawer;
@@ -20,27 +17,32 @@ class _DrawerWidgetState extends State<DrawerWidget>
     var he = MediaQuery.of(context).size.height;
 
     return SingleChildScrollView(
-        child: Column(
+        child: Container(
+          margin: const EdgeInsets.only(
+            left: 20,
+          ),
+          child: Column(
       children: [
-        _buildButton(context),
-        Progerss_Avater(),
-        SizedBox(
-          height: he * 0.02,
-        ),
-        _buildText(context),
-        SizedBox(
-          height: he * 0.02,
-        ),
-        buildDrawerItem(context),
-        SizedBox(
-          height: he * 0.02,
-        ),
-        //Chart()
+          _buildButton(context),
+          Progerss_Avater(),
+          SizedBox(
+            height: he * 0.02,
+          ),
+          _buildText(context),
+          /*SizedBox(
+            height: he * 0.02,
+          ),*/
+          //buildDrawerItem(context),
+          /*SizedBox(
+            height: he * 0.02,
+          ),*/
+          //Chart()
       ],
-    ));
+    ),
+        ));
   }
 
-  Widget buildDrawerItem(BuildContext context) => Padding(
+ /* Widget buildDrawerItem(BuildContext context) => Padding(
         padding: const EdgeInsets.all(20.0),
         child: Column(
           children: DrawerItems.all
@@ -59,7 +61,7 @@ class _DrawerWidgetState extends State<DrawerWidget>
                   ))
               .toList(),
         ),
-      );
+      );*/
   Widget _buildButton(contex) {
     var we = MediaQuery.of(context).size.width;
     var he = MediaQuery.of(context).size.height;
@@ -97,19 +99,27 @@ class _DrawerWidgetState extends State<DrawerWidget>
       margin: EdgeInsets.only(right: we * 0.4),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Диплом",
-            style: GoogleFonts.lato(
+        children: const [
+           Text(
+            "Жобалар",
+            style: TextStyle(
                 fontSize: 40,
                 letterSpacing: 2,
                 color: Colors.white,
                 fontWeight: FontWeight.bold),
           ),
-          const Text(
-            "Тақырыбы",
+           Text(
+            "Бағасын",
             style: TextStyle(
-                fontSize: 40,
+                fontSize: 38,
+                letterSpacing: 2,
+                color: Colors.white,
+                fontWeight: FontWeight.bold),
+          ),
+          Text(
+            "Есептеу",
+            style: TextStyle(
+                fontSize: 36,
                 letterSpacing: 2,
                 color: Colors.white,
                 fontWeight: FontWeight.bold),

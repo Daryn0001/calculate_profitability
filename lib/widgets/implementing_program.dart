@@ -1,9 +1,16 @@
-import 'package:calculate_profitability/widgets/text_span.dart';
+import 'package:calculate_profitability/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../model/note.dart';
 import '../pages/taskpage.dart';
+
+
+class TextFields {
+  static const descriptionD = '1 ай ішіндегі жұмыс күндерінің саны: ';
+  static const descriptionY = 'Рентабельдік норматив: ';
+}
+
 
 class ImplementingProgramCost extends StatefulWidget {
   const ImplementingProgramCost({Key? key, required this.note}) : super(key: key);
@@ -97,26 +104,21 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
         padding: const EdgeInsets.all(8),
         child: Column(children: [
-          Text(title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              )),
-          Form(
-            child: Wrap(children: [
-              getInputForms(
-                  name: 'D',
-                  type: 'күн',
-                  controller: workingDayPerMonth2Controller),
-              getInputForms(
-                  name: 'У',
-                  index: 'p',
-                  type: '%',
-                  controller: profitabilityStandardController),
-            ]),
-          ),
+          TextBuilder.getTitle(text: title),
+
+          Wrap(children: [
+            TextBuilder.getInputForms(
+                title: TextFields.descriptionD,
+                name: 'D',
+                type: 'күн',
+                controller: workingDayPerMonth2Controller, ),
+            TextBuilder.getInputForms(
+              title: TextFields.descriptionY,
+                name: 'У',
+                index: 'p',
+                type: '%',
+                controller: profitabilityStandardController),
+          ]),
           ElevatedButton(
             onPressed: () async {
               if (workingDayPerMonth2Controller.text.isNotEmpty &&
@@ -237,13 +239,13 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
         decoration: InputDecoration(
           hoverColor: Colors.white,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.blue,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.grey,
               width: 2.0,

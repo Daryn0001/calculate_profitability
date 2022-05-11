@@ -1,4 +1,4 @@
-import 'package:calculate_profitability/widgets/text_span.dart';
+import 'package:calculate_profitability/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -15,14 +15,14 @@ class TechnicalEquipmentCost extends StatefulWidget {
 }
 
 class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
-  final title = 'техникалық құралдар кешеніне кеткен шығынды есептеу';
+  final title = 'Техникалық құралдар кешеніне кеткен шығынды есептеу';
   final isDigit = RegExp(r'[0-9]\.?[0-9]?');
-  double componentFontSize = 14;
+
   final componentNames = [
     'ДЭЕМ-нің саны:',
     'ДЭЕМ бағасы:',
-    'Басып шығару құралының бағасы',
-    'Басып шығару құралының бағасы'
+    'Басып шығару құралының бағасы:',
+    'Басып шығару құралының бағасы:'
   ];
   int technicalEquipmentCosts = 0;
   int quantityOfComputers = 0;
@@ -102,35 +102,19 @@ class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
           Text(title,
               textAlign: TextAlign.center,
               style: const TextStyle(
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: FontWeight.w500,
                 color: Colors.black,
               )),
 
-          Form(
-            child: Wrap(children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                getComponentName(name: componentNames[0]),
-                getInputForms(name: '', type: 'дана', controller: quantityOfComputersController),
-              ]),
-              Column(children: [
-                getComponentName(name: componentNames[1]),
-                getInputForms(name: '', type: 'теңге', controller: costOfOneComputerController),
-              ]),
-              Column(children: [
-                getComponentName(name: componentNames[2]),
-                getInputForms(name: '', type: 'дана', controller: quantityOfPrintersController),
-              ]),
-              Column(children: [
-                getComponentName(name: componentNames[3]),
-                getInputForms(name: '', type: 'теңге', controller: costOfOnePrinterController),
-              ]),
+          Wrap(children: [
+            getInputForms(title: componentNames[0] ,name: '', type: 'дана', controller: quantityOfComputersController),
+            getInputForms(title: componentNames[1] ,name: '', type: 'теңге', controller: costOfOneComputerController),
+            getInputForms(title: componentNames[2] ,name: '', type: 'дана', controller: quantityOfPrintersController),
+            getInputForms(title: componentNames[3], name: '', type: 'теңге', controller: costOfOnePrinterController),
 
 
-            ]),
-          ),
+          ]),
           ElevatedButton(
             onPressed: () async {
 
@@ -185,28 +169,34 @@ class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
         ]));
   }
 
-  Widget getComponentName({required name}){
-    return Text(name,
-      style: TextStyle(fontSize: componentFontSize),
-    );
-  }
 
-  Widget getInputForms({required name, index = '', required controller, required type}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(400, 50)),
-        child: ListTile(
-          leading: RichText(
-            text: TextSpan(children: [
-              TextBuilder.getText(text: name),
-              TextBuilder.getTextIndex(text: index),
-            ]),
+  Widget getInputForms({required type, required name, index = '', required controller, required title}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        vertical: 8,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: const TextStyle(fontSize: 16,)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
+            child: ConstrainedBox(
+              constraints: BoxConstraints.tight(const Size(400, 50)),
+              child: ListTile(
+                leading: RichText(
+                  text: TextSpan(children: [
+                    TextBuilder.getText(text: name),
+                    TextBuilder.getTextIndex(text: index),
+                  ]),
+                ),
+                title: getInputField(controller: controller),
+                trailing: Text(type, style: const TextStyle(fontSize: 12)),
+              ),
+            ),
           ),
-          title: getInputField(controller: controller),
-          trailing: Text(type, style: const TextStyle(fontSize: 12)),
-
-        ),
+        ],
       ),
     );
   }
@@ -235,13 +225,13 @@ class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
         decoration: InputDecoration(
           hoverColor: Colors.white,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.blue,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.grey,
               width: 2.0,

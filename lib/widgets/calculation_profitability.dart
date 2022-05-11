@@ -1,4 +1,4 @@
-import 'package:calculate_profitability/widgets/text_span.dart';
+import 'package:calculate_profitability/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

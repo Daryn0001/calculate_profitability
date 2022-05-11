@@ -1,10 +1,18 @@
 import 'dart:ui';
 
+import 'package:calculate_profitability/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../model/note.dart';
 import '../pages/taskpage.dart';
+
+class TextFields {
+  static const title = 'Машиналық уақыт сағатының құнын есептеу:';
+  static const descriptionForS = 'Мұндағы S: ДЭЕМ-нің алғашқы бағасы.';
+  static const descriptionForQ = 'Мұндағы Qc: Программист жалақысы.';
+}
+
 
 class CostOfMachineTimeHour extends StatefulWidget {
   const CostOfMachineTimeHour({Key? key, required this.note}) : super(key: key);
@@ -19,6 +27,8 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
   final double dividerWidth = 70;
   final double textSize = 18;
   final double indexSize = 11;
+
+
   final isDigit = RegExp(r'[0-9]\.?[0-9]?');
 
   int costOfMachineTimeHours = 0;
@@ -211,7 +221,6 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
     TaskPage.note.maintenanceCostsPerMonth = maintenanceCostsPerMonth;
     TaskPage.note.costOfMachineTimeHours = costOfMachineTimeHours;
 
-    //await NotesDatabase.instance.update(TaskPage.note);
 
     //print('$runtimeType note updated: ${TaskPage.note}\n');
   }
@@ -225,23 +234,17 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
     return Container(
         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
         padding: const EdgeInsets.all(8),
-        child: Column(children: [
-          const Text('Машиналық уақыт сағатының құнын есептеу:',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              )),
+        child: Column(
+          children: [
+          TextBuilder.getTitle(text: TextFields.title),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               RichText(
                 text: TextSpan(
-                    style: TextStyle(color: Colors.black, fontSize: 18),
                     children: [
-                      getText(text: 'q'),
-                      getText(text: ' = '),
+                      TextBuilder.getText(text: 'q'),
+                      TextBuilder.getText(text: ' = '),
                     ]),
               ),
               Column(
@@ -249,20 +252,18 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                 children: [
                   RichText(
                     text: TextSpan(
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 18),
                         children: [
-                          getText(
+                          TextBuilder.getText(
                             text: 'A',
                           ),
-                          getText(
+                          TextBuilder.getText(
                             text: ' + ',
                           ),
-                          getText(
+                          TextBuilder.getText(
                             text: 'E',
                           ),
-                          getText(text: ' + '),
-                          getText(
+                          TextBuilder.getText(text: ' + '),
+                          TextBuilder.getText(
                             text: 'Q',
                           ),
                         ]),
@@ -300,10 +301,9 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
             children: [
               RichText(
                 text: TextSpan(
-                    style: TextStyle(color: Colors.black, fontSize: 18),
                     children: [
-                      getText(text: 'A'),
-                      getText(text: ' = '),
+                      TextBuilder.getText(text: 'A'),
+                      TextBuilder.getText(text: ' = '),
                     ]),
               ),
               Column(
@@ -311,19 +311,17 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                 children: [
                   RichText(
                     text: TextSpan(
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 18),
                         children: [
-                          getText(
+                          TextBuilder.getText(
                             text: 'S',
                           ),
-                          getText(
+                          TextBuilder.getText(
                             text: ' * ',
                           ),
-                          getText(
+                          TextBuilder.getText(
                             text: 'q',
                           ),
-                          getTextIndex(text: 'аморт'),
+                          TextBuilder.getTextIndex(text: 'аморт'),
                         ]),
                   ),
                   SizedBox(
@@ -336,10 +334,9 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                   ),
                   RichText(
                     text: TextSpan(
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 18),
+
                         children: [
-                          getText(
+                          TextBuilder.getText(
                             text: '12',
                           ),
                         ]),
@@ -354,15 +351,14 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
             children: [
               RichText(
                 text: TextSpan(
-                    style: TextStyle(color: Colors.black, fontSize: 18),
                     children: [
-                      getText(text: 'E'),
-                      getText(text: ' = '),
-                      getText(text: 'w'),
-                      getText(text: ' * '),
-                      getText(text: 't'),
-                      getText(text: ' * '),
-                      getText(text: 'T'),
+                      TextBuilder.getText(text: 'E'),
+                      TextBuilder.getText(text: ' = '),
+                      TextBuilder.getText(text: 'w'),
+                      TextBuilder.getText(text: ' * '),
+                      TextBuilder.getText(text: 't'),
+                      TextBuilder.getText(text: ' * '),
+                      TextBuilder.getText(text: 'T'),
                     ]),
               ),
             ],
@@ -412,133 +408,150 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                           ),
                         ]),
                   ),
+
                 ],
               ),
             ],
           ),
-          Form(
-            child: Wrap(children: [
-              getInputForms(
-                  name: 'S', type: 'теңге', controller: initialPriceController),
-              getInputForms(
-                  name: 'q',
-                  index: 'аморт',
-                  type: '%',
-                  controller: annualDepreciationPercentageController),
-              getInputForms(
-                  name: 'w',
-                  type: 'кВт/сағ',
-                  controller: requiredPowerController),
-              getInputForms(
-                  name: 't',
-                  type: 'сағат',
-                  controller: operatingTimeController),
-              getInputForms(
-                  name: 'T',
-                  type: 'теңге',
-                  controller: electricityTariffController),
-              getInputForms(
-                  name: 'Q',
-                  index: 'c',
-                  type: 'теңге',
-                  controller: programmerSalaryController),
-              getInputForms(
-                  name: 'n',
-                  type: 'дана',
-                  controller: numberOfComputersController),
-              getInputForms(
-                  name: 'D',
-                  index: 'p',
-                  type: 'күн',
-                  controller: workingDayPerMonthController),
-              getInputForms(
-                  name: 'r',
-                  type: 'сағат',
-                  controller: hourlyWorkingDayRateController),
-            ]),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                    children: [
+                      TextBuilder.getText(text: TextFields.descriptionForS,
+                          size: 16,
+                          color: Colors.black54),
+                    ]),
+              ),
+            ],
           ),
-          Container(
-            child: ElevatedButton(
-              onPressed: () async {
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              RichText(
+                text: TextSpan(
+                    children: [
+                      TextBuilder.getText(text: TextFields.descriptionForQ,
+                          size: 16,
+                          color: Colors.black54),
+                    ]),
+              ),
+            ],
+          ),
+          Wrap(children: [
+            TextBuilder.getInputForms(
+            title: 'Амортизацияның жылдық пайызы:',
+                name: 'q',
+                index: 'аморт',
+                type: '%',
+                controller: annualDepreciationPercentageController),
+            TextBuilder.getInputForms(
+              title: 'ДЭЕМ қажетті қуат:',
+                name: 'w',
+                type: 'кВт/сағ',
+                controller: requiredPowerController),
+            TextBuilder.getInputForms(
+              title: 'ДЭЕМ-нің жұмыс уақыты:',
+                name: 't',
+                type: 'сағат',
+                controller: operatingTimeController),
+            TextBuilder.getInputForms(
+              title: 'Электроэнергия тарифі: ',
+                name: 'T',
+                type: 'теңге',
+                controller: electricityTariffController),
+            TextBuilder.getInputForms(
+              title: 'ДЭЕМ-нің саны: ',
+                name: 'n',
+                type: 'дана',
+                controller: numberOfComputersController),
+            TextBuilder.getInputForms(
+              title: '1 айдағы жұмыс күні: ',
+                name: 'D',
+                index: 'p',
+                type: 'күн',
+                controller: workingDayPerMonthController),
+            TextBuilder.getInputForms(
+              title: '1 күндегі жүмыс уақыты:',
+                name: 'r',
+                type: 'сағат',
+                controller: hourlyWorkingDayRateController),
+          ]),
+          ElevatedButton(
+            onPressed: () async {
 
-                if (initialPriceController.text.isNotEmpty &&
-                    annualDepreciationPercentageController.text.isNotEmpty &&
-                    requiredPowerController.text.isNotEmpty &&
-                    operatingTimeController.text.isNotEmpty &&
-                    electricityTariffController.text.isNotEmpty &&
-                    programmerSalaryController.text.isNotEmpty &&
-                    numberOfComputersController.text.isNotEmpty &&
-                    workingDayPerMonthController.text.isNotEmpty &&
-                    hourlyWorkingDayRateController.text.isNotEmpty &&
-                    isDigit.hasMatch(initialPriceController.text) &&
-                    isDigit.hasMatch(
-                        annualDepreciationPercentageController.text) &&
-                    isDigit.hasMatch(requiredPowerController.text) &&
-                    isDigit.hasMatch(operatingTimeController.text) &&
-                    isDigit.hasMatch(programmerSalaryController.text) &&
-                    isDigit.hasMatch(numberOfComputersController.text) &&
-                    isDigit.hasMatch(workingDayPerMonthController.text) &&
-                    isDigit.hasMatch(hourlyWorkingDayRateController.text) &&
-                    isDigit.hasMatch(electricityTariffController.text)) {
-                  initialPrice = int.parse(initialPriceController.text).toInt();
-                  annualDepreciationPercentage =
-                      double.parse(annualDepreciationPercentageController.text)
-                          .toDouble();
-                  requiredPower =
-                      double.parse(requiredPowerController.text).toDouble();
-                  operatingTime =
-                      double.parse(operatingTimeController.text).toDouble();
-                  electricityTariff =
-                      double.parse(electricityTariffController.text).toDouble();
-                  programmerSalary =
-                      int.parse(programmerSalaryController.text).toInt();
-                  numberOfComputers =
-                      int.parse(numberOfComputersController.text).toInt();
-                  workingDayPerMonth =
-                      int.parse(workingDayPerMonthController.text).toInt();
-                  hourlyWorkingDayRate =
-                      int.parse(hourlyWorkingDayRateController.text).toInt();
+              if (annualDepreciationPercentageController.text.isNotEmpty &&
+                  requiredPowerController.text.isNotEmpty &&
+                  operatingTimeController.text.isNotEmpty &&
+                  electricityTariffController.text.isNotEmpty &&
+                  numberOfComputersController.text.isNotEmpty &&
+                  workingDayPerMonthController.text.isNotEmpty &&
+                  hourlyWorkingDayRateController.text.isNotEmpty &&
+                  isDigit.hasMatch(
+                      annualDepreciationPercentageController.text) &&
+                  isDigit.hasMatch(requiredPowerController.text) &&
+                  isDigit.hasMatch(operatingTimeController.text) &&
+                  isDigit.hasMatch(numberOfComputersController.text) &&
+                  isDigit.hasMatch(workingDayPerMonthController.text) &&
+                  isDigit.hasMatch(hourlyWorkingDayRateController.text) &&
+                  isDigit.hasMatch(electricityTariffController.text)) {
+                initialPrice = int.parse(initialPriceController.text).toInt();
+                annualDepreciationPercentage =
+                    double.parse(annualDepreciationPercentageController.text)
+                        .toDouble();
+                requiredPower =
+                    double.parse(requiredPowerController.text).toDouble();
+                operatingTime =
+                    double.parse(operatingTimeController.text).toDouble();
+                electricityTariff =
+                    double.parse(electricityTariffController.text).toDouble();
+                numberOfComputers =
+                    int.parse(numberOfComputersController.text).toInt();
+                workingDayPerMonth =
+                    int.parse(workingDayPerMonthController.text).toInt();
+                hourlyWorkingDayRate =
+                    int.parse(hourlyWorkingDayRateController.text).toInt();
 
-                  depreciationPerMonth =
-                      (initialPrice * (annualDepreciationPercentage / 100)) /
-                          12;
-                  electricityConsumedPerMonth =
-                      requiredPower * operatingTime * electricityTariff;
-                  maintenanceCostsPerMonth =
-                      programmerSalary / numberOfComputers;
-                  costOfMachineTimeHours = ((depreciationPerMonth +
-                              electricityConsumedPerMonth +
-                              maintenanceCostsPerMonth) /
-                          (workingDayPerMonth * hourlyWorkingDayRate))
-                      .round();
+                depreciationPerMonth =
+                    (TaskPage.note.technicalEquipmentCosts * (annualDepreciationPercentage / 100)) /
+                        12;
+                electricityConsumedPerMonth =
+                    requiredPower * operatingTime * electricityTariff;
+                maintenanceCostsPerMonth =
+                    TaskPage.note.salary / numberOfComputers;
+                costOfMachineTimeHours = ((depreciationPerMonth +
+                            electricityConsumedPerMonth +
+                            maintenanceCostsPerMonth) /
+                        (workingDayPerMonth * hourlyWorkingDayRate))
+                    .round();
 
-                  addNote(
-                    initialPrice: initialPrice,
-                    annualDepreciationPercentage: annualDepreciationPercentage,
-                    requiredPower: requiredPower,
-                    operatingTime: operatingTime,
-                    electricityTariff: electricityTariff,
-                    programmerSalary: programmerSalary,
-                    numberOfComputers: numberOfComputers,
-                    workingDayPerMonth: workingDayPerMonth,
-                    hourlyWorkingDayRate: hourlyWorkingDayRate,
-                    depreciationPerMonth: depreciationPerMonth,
-                    electricityConsumedPerMonth: electricityConsumedPerMonth,
-                    maintenanceCostsPerMonth: maintenanceCostsPerMonth,
-                    costOfMachineTimeHours: costOfMachineTimeHours,
-                  );
+                addNote(
+                  initialPrice: TaskPage.note.technicalEquipmentCosts,
+                  annualDepreciationPercentage: annualDepreciationPercentage,
+                  requiredPower: requiredPower,
+                  operatingTime: operatingTime,
+                  electricityTariff: electricityTariff,
+                  programmerSalary: TaskPage.note.salary,
+                  numberOfComputers: numberOfComputers,
+                  workingDayPerMonth: workingDayPerMonth,
+                  hourlyWorkingDayRate: hourlyWorkingDayRate,
+                  depreciationPerMonth: depreciationPerMonth,
+                  electricityConsumedPerMonth: electricityConsumedPerMonth,
+                  maintenanceCostsPerMonth: maintenanceCostsPerMonth,
+                  costOfMachineTimeHours: costOfMachineTimeHours,
+                );
 
-                  _getAnswer(costOfMachineTimeHours);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                        content:
-                            Text('Alert', style: TextStyle(color: Colors.red))),
-                  );
-                }
-              },
-              child: const Text('Енгізу'),
-            ),
+                _getAnswer(costOfMachineTimeHours);
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                      content:
+                          Text('Alert', style: TextStyle(color: Colors.red))),
+                );
+              }
+            },
+            child: const Text('Енгізу'),
           ),
           Container(
             padding: const EdgeInsets.all(8),
@@ -554,32 +567,41 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
         ]));
   }
 
-  Widget getInputForms(
-      {required name, index = '', required controller, required type}) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: ConstrainedBox(
-        constraints: BoxConstraints.tight(const Size(400, 50)),
-        child: ListTile(
-          leading: RichText(
-            text: TextSpan(children: [
-              getText(text: name),
-              getTextIndex(text: index),
-            ]),
+  Widget getInputForms({required type, required name, index = '', required controller, required title}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        vertical: 8,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+              style: const TextStyle(fontSize: 16,)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
+            child: ConstrainedBox(
+              constraints: BoxConstraints.tight(const Size(400, 50)),
+              child: ListTile(
+                leading: RichText(
+                  text: TextSpan(children: [
+                    TextBuilder.getText(text: name),
+                    TextBuilder.getTextIndex(text: index),
+                  ]),
+                ),
+                title: getInputField(controller: controller),
+                trailing: Text(type, style: const TextStyle(fontSize: 12)),
+              ),
+            ),
           ),
-          title: getInputField(controller: controller),
-          trailing: Text(type, style: const TextStyle(fontSize: 12)),
-        ),
+        ],
       ),
     );
   }
-
   // ! create text
   TextSpan getText({required text}) {
     return TextSpan(
         text: text, style: TextStyle(color: Colors.black, fontSize: textSize));
   }
-
   // ! create text index
   TextSpan getTextIndex({required text}) {
     return TextSpan(
@@ -614,13 +636,13 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
         decoration: InputDecoration(
           hoverColor: Colors.white,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.blue,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.grey,
               width: 2.0,

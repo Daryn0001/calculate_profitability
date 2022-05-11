@@ -30,11 +30,11 @@ class _ChangeThembuttonState extends State<ChangeThembutton> {
         icon: Isicons
             ? const Icon(
                 Icons.mode_night_outlined,
-                color: Colors.grey,
+                color: Colors.white70,
               )
             : const Icon(
                 Icons.light_mode_outlined,
-                color: Colors.grey,
+                color: Colors.white70,
               ));
   }
 }

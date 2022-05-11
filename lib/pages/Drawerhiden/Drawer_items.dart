@@ -8,7 +8,7 @@ class DrawerItem {
   DrawerItem({required this.title, required this.icon});
 }
 
-class DrawerItems {
+/*class DrawerItems {
   static final categorise =
       DrawerItem(title: "Categorise", icon: Icons.grid_view_outlined);
   static final analytics =
@@ -17,4 +17,4 @@ class DrawerItems {
       DrawerItem(title: "About", icon: Icons.person_outlined);
 
   static final List<DrawerItem> all = [categorise, analytics,about];
-}
+}*/

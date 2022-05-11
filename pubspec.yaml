@@ -81,6 +81,8 @@ flutter:
     - assets/Avatar.jpg
     - assets/bitcoin1.jpg
     - assets/bit2.webp  #   - images/a_dot_burr.jpeg
+    - assets/top_img1.jpg  #   - images/a_dot_burr.jpeg
+    - assets/top_img2.jpg  #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

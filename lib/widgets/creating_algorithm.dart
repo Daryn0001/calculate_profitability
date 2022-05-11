@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:calculate_profitability/widgets/text_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -18,6 +19,7 @@ class CostOfCreatingAnAlgorithm extends StatefulWidget {
 }
 
 class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
+  final title = 'Алгоритм құруға кеткен шығындарды есептеу:';
   final salaryController = TextEditingController();
   final insuranceController = TextEditingController();
   final timeController = TextEditingController();
@@ -78,79 +80,42 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
         decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
         padding: const EdgeInsets.all(8),
         child: Column(children: [
-          const Text('Алгоритм құруға кеткен шығындарды есептеу:',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
-              )),
+
+           TextBuilder.getTitle(text: title),
           RichText(
-            text: const TextSpan(
-                style: TextStyle(color: Colors.black, fontSize: 18),
+            text:  TextSpan(
                 children: [
-                  TextSpan(
-                    text: 'C',
-                    // style: TextStyle(color: Colors.black, fontSize: 18)
-                  ),
-                  TextSpan(
-                      text: 'ақкш',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 10,
-                          fontFeatures: [FontFeature.subscripts()])),
-                  TextSpan(text: ' = ', style: TextStyle(fontSize: 14)),
-                  TextSpan(
-                    text: 'Ж',
-                    //style: TextStyle(fontSize: 14)
-                  ),
-                  TextSpan(
-                      text: 'қ',
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFeatures: [FontFeature.subscripts()])),
-                  TextSpan(text: ' * ', style: TextStyle(fontSize: 14)),
-                  TextSpan(
-                    text: 't',
-                  ),
-                  TextSpan(text: ' + ', style: TextStyle(fontSize: 14)),
-                  TextSpan(
-                    text: 'A',
-                  ),
-                  TextSpan(
-                      text: 'әс',
-                      style: TextStyle(
-                          fontSize: 10,
-                          fontFeatures: [FontFeature.subscripts()])),
+                  TextBuilder.getText(text: 'C'),
+                  TextBuilder.getTextIndex(text: 'ақкш'),
+                  TextBuilder.getText(text: ' = '),
+                  TextBuilder.getText(text: 'Ж'),
+                  TextBuilder.getTextIndex(text: 'қ'),
+                  TextBuilder.getText(text: ' * '),
+                  TextBuilder.getText(text: 't'),
+                  TextBuilder.getText(text: ' + '),
+                  TextBuilder.getText(text: 'A'),
+                  TextBuilder.getTextIndex(text: 'әс'),
                 ]),
           ),
-          Form(
-            //autovalidateMode: AutovalidateMode.always,
-            child: Wrap(children: [
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints.tight(const Size(400, 50)),
-                      child: getInputForms(
-                          name: 'Ж',
-                          index: 'қ',
-                          controller: salaryController))),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints.tight(const Size(400, 50)),
-                      child: getInputForms(
-                          name: 'Т', controller: timeController))),
-              Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints.tight(const Size(400, 50)),
-                      child: getInputForms(
-                          name: 'А',
-                          index: 'әс',
-                          controller: insuranceController)))
-            ]),
-          ),
+          Wrap(children: [
+            getInputForms(
+              title: 'Программист жалақысы:',
+                name: 'Ж',
+                index: 'қ',
+                type: 'теңге',
+                controller: salaryController),
+            getInputForms(
+              title: 'Алгоритм құруға кеткен уақыт:',
+                name: 'Т',
+                type: 'ай',
+                controller: timeController),
+            getInputForms(
+                title: 'Сақтандыруға жіберілген шығын:',
+                name: 'А',
+                index: 'әс',
+                type: '%',
+                controller: insuranceController)
+          ]),
           ElevatedButton(
             onPressed: () async {
               RegExp isDigit = RegExp(r'[0-9]\.?[0-9]?');
@@ -178,15 +143,9 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
                 );
 
                 _getAnswer(algorithmCreatingCost);
-                salaryController.text = '${salaryController.text} тг';
-                insuranceController.text = '${insuranceController.text}%';
-                timeController.text = '${timeController.text} ай';
+
               } else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                      content:
-                          Text('Alert', style: TextStyle(color: Colors.red))),
-                );
+                TextBuilder.getAlertMessage(context: context);
               }
             },
             child: const Text('Енгізу'),
@@ -214,18 +173,34 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
         ]));
   }
 
-  Widget getInputForms({required name, index = '', required controller}) {
-    return ListTile(
-      leading: RichText(
-        text: TextSpan(style: const TextStyle(color: Colors.black), children: [
-          TextSpan(text: name, style: const TextStyle(fontSize: 18)),
-          TextSpan(
-              text: index,
-              style: const TextStyle(
-                  fontSize: 12, fontFeatures: [FontFeature.subscripts()])),
-        ]),
+  Widget getInputForms({required type, required name, index = '', required controller, required title}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+        vertical: 8,
       ),
-      title: getInputField(controller: controller),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(title,
+          style: const TextStyle(fontSize: 16,)),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 1.0, horizontal: 8),
+            child: ConstrainedBox(
+              constraints: BoxConstraints.tight(const Size(400, 50)),
+              child: ListTile(
+                leading: RichText(
+                  text: TextSpan(children: [
+                    TextBuilder.getText(text: name),
+                    TextBuilder.getTextIndex(text: index),
+                  ]),
+                ),
+                title: getInputField(controller: controller),
+                trailing: Text(type, style: const TextStyle(fontSize: 12)),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -253,13 +228,13 @@ class _CostOfCreatingAnAlgorithmState extends State<CostOfCreatingAnAlgorithm> {
         decoration: InputDecoration(
           hoverColor: Colors.white,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.blue,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.grey,
               width: 2.0,
