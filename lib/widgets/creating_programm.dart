@@ -96,7 +96,10 @@ class _CostOfCreatingProgramState extends State<CostOfCreatingProgram> {
 
   Widget box() {
     return Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.black54, width: 2.5)),
+        margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.all(8),
         child: Column(children: [
           TextBuilder.getTitle(text: TextFields.title),

@@ -114,8 +114,8 @@ class TextBuilder {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
-              color: Colors.grey,
-              width: 2.0,
+              color: Colors.white70,
+              width: 2.5,
             ),
           ),
         ),

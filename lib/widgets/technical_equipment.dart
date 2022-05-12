@@ -90,13 +90,17 @@ class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
   @override
   Widget build(BuildContext context) {
     return Container(
+
       child: box(),
     );
   }
 
   Widget box() {
     return Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.black54, width: 2.5)),
+        margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.all(8),
         child: Column(children: [
           Text(title,
@@ -233,8 +237,8 @@ class _TechnicalEquipmentCostState extends State<TechnicalEquipmentCost> {
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
-              color: Colors.grey,
-              width: 2.0,
+              color: Colors.white70,
+              width: 2.5,
             ),
           ),
         ),

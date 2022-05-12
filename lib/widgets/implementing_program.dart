@@ -101,7 +101,10 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
 
   Widget box() {
     return Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.black54, width: 2.5)),
+        margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.all(8),
         child: Column(children: [
           TextBuilder.getTitle(text: title),
@@ -159,7 +162,7 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
               text:'С', index:'кекш', value: result),
 
           getResultText(title: 'Кешенді құруға және өндіруге кеткен шығын',
-            text:'С', index:'ж', value: totalCostForCreationAndImplementing,),
+            text:'С', value: totalCostForCreationAndImplementing,),
 
           getResultText(title: 'Пайда',text:'П', value: profit),
 
@@ -177,18 +180,41 @@ class _ImplementingProgramCostState extends State<ImplementingProgramCost> {
       padding: const EdgeInsets.all(8),
       margin: const EdgeInsets.only(top:8),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
            Text('$title :',
-              textAlign: TextAlign.center,
+              textAlign: TextAlign.left,
               style: const TextStyle(fontSize: 16)),
-          RichText(
-            text: TextSpan(children: [
-              TextBuilder.getText(text: text),
-              TextBuilder.getTextIndex(text: index),
-              TextBuilder.getText(text: ' = '),
-              TextBuilder.getText(text: value.toString()),
-              TextBuilder.getTextIndex(text: type),
-            ]),
+          ListTile(
+            leading: RichText(
+              text: TextSpan(children: [
+                TextBuilder.getText(text: text),
+                TextBuilder.getTextIndex(text: index),
+                TextBuilder.getText(text: ' = '),
+                /*TextBuilder.getText(text: value.toString()),
+              TextBuilder.getTextIndex(text: type),*/
+              ]),
+            ),
+
+            title:  Container(
+              height: 30,
+              width: MediaQuery.of(context).size.width * 0.50,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 2,
+              ),
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(5),
+                  border: Border.all(color: Colors.black54, width: 1.5)),
+              child: RichText(
+                text: TextSpan(children: [
+                  TextBuilder.getText(text: value.toString()),
+                  TextBuilder.getTextIndex(text: type),
+                ]),
+              ),
+            ),
+
           ),
         ],
       ),

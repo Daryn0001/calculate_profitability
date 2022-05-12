@@ -40,7 +40,7 @@ class _HidenDrawerState extends State<HidenDrawer> {
 
   @override
   void initState() {
-    // TODO: implement initState
+
     super.initState();
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

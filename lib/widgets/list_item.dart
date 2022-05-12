@@ -34,7 +34,6 @@ class _ListItemState extends State<ListItem> {
 
   }
 
-
   setBool () {
     setState(() {
       if(isDeleted) {

@@ -104,7 +104,7 @@ class NoteFields {
 }
 
 class Note {
-   int? id;
+  final int? id;
 
   String projectName;
   // ? 4.0

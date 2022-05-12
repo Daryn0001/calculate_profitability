@@ -2,13 +2,17 @@ import 'package:calculate_profitability/widgets/creating_algorithm.dart';
 import 'package:flutter/material.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
-import '../core/res/style.dart';
 import '../db/database_helper.dart';
 import '../model/note.dart';
+import '../widgets/button.dart';
 import '../widgets/implementing_program.dart';
 import '../widgets/calculate_machine_time_hour.dart';
 import '../widgets/creating_programm.dart';
 import '../widgets/technical_equipment.dart';
+
+String text = 'Кешенді құруға және өндіруге кеткен шығындар, '
+    'техникалық құралдар кешеніне кеткен шығындар, программа жасауға және түзетуге кеткен шығындар, '
+    'ақпарат өнімділігі есептеу';
 
 class TaskPage extends StatefulWidget {
   static Note note = Note();
@@ -23,10 +27,6 @@ class TaskPage extends StatefulWidget {
 
 class _TaskPageState extends State<TaskPage> {
   final controller = TextEditingController();
-
-  String text = 'Кешенді құруға және өндіруге кеткен шығындар, '
-      'техникалық құралдар кешеніне кеткен шығындар, программа жасауға және түзетуге кеткен шығындар, '
-      'ақпарат өнімділігі есептеу';
 
   @override
   dispose() {
@@ -47,49 +47,50 @@ class _TaskPageState extends State<TaskPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          title: Text('Жаңа жоба құру'),
+        ),
         body: KeyboardDismisser(
           gestures: const [GestureType.onTap, GestureType.onVerticalDragDown],
           child: SingleChildScrollView(
             child: Container(
-                //color: const Color(0xff7f8cb6),//AppStyle.taskPageBackgroundColor,
                 child: Column(
-                  children: [
-                    getTopImage(),
-                    //getDescription(),
-                    getInputField(controller: controller),
-                    getAlgorithmCost(note: widget.noteForEdit),
-                    getTechnicalEquipmentCost(note: widget.noteForEdit),
-                    getCostOfMachineTimeHour(note: widget.noteForEdit),
-                    getProgramCost(note: widget.noteForEdit),
-                    getImplementingProgramCost(note: widget.noteForEdit),
-                    submitBtn(),
-                  ],
-                )),
+              children: [
+                getTopImage(),
+                //getDescription(),
+                getInputField(controller: controller),
+                getAlgorithmCost(note: widget.noteForEdit),
+                getTechnicalEquipmentCost(note: widget.noteForEdit),
+                getCostOfMachineTimeHour(note: widget.noteForEdit),
+                getProgramCost(note: widget.noteForEdit),
+                getImplementingProgramCost(note: widget.noteForEdit),
+                submitBtn(),
+              ],
+            )),
           ),
         ));
   }
 
-
-  Widget getTopImage(){
+  Widget getTopImage() {
     return SizedBox(
       height: MediaQuery.of(context).size.height * 0.18,
-      child: const Image(image: AssetImage(
-        'assets/top_img2.jpg',
-
-      ),
-      fit: BoxFit.cover,
-      width: double.infinity),
+      child: const Image(
+          image: AssetImage(
+            'assets/top_img2.jpg',
+          ),
+          fit: BoxFit.cover,
+          width: double.infinity),
     );
   }
 
   Widget submitBtn() {
-    return ElevatedButton(
+    var btn = Button(
       onPressed: () {
-        addProjectName(name: controller.text);
+        addProjectToDB(name: controller.text);
       },
-      child: const Text('растау'),
+      text: 'РАСТАУ',
     );
+    return btn;
   }
 
   Widget getInputField({controller}) {
@@ -115,17 +116,17 @@ class _TaskPageState extends State<TaskPage> {
           labelText: 'Жоба тақырыбы',
           hoverColor: Colors.white,
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
               color: Colors.blue,
-              width: 2.0,
+              width: 2.5,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(5.0),
             borderSide: const BorderSide(
-              color: Colors.grey,
-              width: 2.0,
+              color: Colors.black54,
+              width: 2.5,
             ),
           ),
         ),
@@ -153,14 +154,14 @@ class _TaskPageState extends State<TaskPage> {
     );
   }
 
-  Future addProjectName({name}) async {
+  Future addProjectToDB({name}) async {
     setState(() {
       if (name != '' && name.isNotEmpty) {
         TaskPage.note.projectName = name;
       }
     });
     if (widget.noteForEdit != null) {
-      TaskPage.note.id = widget.noteForEdit.id;
+      //TaskPage.note.id = widget.noteForEdit.id;
     }
     if (widget.isEdit) {
       setState(() {

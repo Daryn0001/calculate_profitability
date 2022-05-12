@@ -123,10 +123,8 @@ class _HomePageState extends State<HomePage> {
                            builder: (context, AsyncSnapshot snapshot) {
                              return ListView.builder(
                                  itemCount: snapshot.data.length,
-                                 //itemCount: 4,
                                  itemBuilder: (context, index) {
                                    Note n = snapshot.data[index];
-
                                    print('${n.id} : ${n.projectName}' );
                                       return ListItem(
                                        projectName: n.projectName,

@@ -232,7 +232,10 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
 
   Widget box() {
     return Container(
-        decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.black54, width: 2.5)),
+        margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.all(8),
         child: Column(
           children: [
@@ -496,7 +499,7 @@ class _CostOfMachineTimeHourState extends State<CostOfMachineTimeHour> {
                   isDigit.hasMatch(workingDayPerMonthController.text) &&
                   isDigit.hasMatch(hourlyWorkingDayRateController.text) &&
                   isDigit.hasMatch(electricityTariffController.text)) {
-                initialPrice = int.parse(initialPriceController.text).toInt();
+
                 annualDepreciationPercentage =
                     double.parse(annualDepreciationPercentageController.text)
                         .toDouble();
